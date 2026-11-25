@@ -38,6 +38,7 @@ Living document. Read before every development session. Add or revise rules when
 23. Never change currency names, rewards or transfer prices without approval.
 24. Explain major technical decisions in simple English.
 25. The project owner has final creative authority.
+26. End-of-day rule: When the owner says “done for the day,” stop starting new development work. Wrap up briefly, ensure meaningful completed changes are saved to GitHub, record only essential progress, blockers and the next starting point as needed, and stop. Do not create unnecessary files or save every conversational detail. Resume from GitHub when the owner returns; do not continue development in the background.
 
 ## Golden rule
 Never lose, forget, overwrite or falsely report project progress. Document important decisions and milestones in GitHub.
@@ -46,3 +47,4 @@ Never lose, forget, overwrite or falsely report project progress. Document impor
 Maintain CHANGELOG.md, BUGS.md, IDEAS.md, DECISIONS.md, BACKUP.md and FEATURES.md as relevant changes occur.
 
 - 2026-11-24: Owner approved rules 6–25, golden rule and six tracking files.
+- 2026-11-24: Owner added rule 26 (end-of-day wrap-up).
