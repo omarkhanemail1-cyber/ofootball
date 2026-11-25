@@ -13,3 +13,5 @@ Days 22–28: original cinematic and audio, onboarding, replays, notifications, 
 Days 29–30: multiplayer prototype, controller/device testing, security and performance checks, documented known bugs and release candidate. No promise of commercial-grade completion in 30 days.
 ## Migration
 New ES modules under src/systems are isolated foundations, not wired into legacy game yet. Add modules incrementally; classic game.js globals must remain available to existing inline HTML handlers until those handlers are migrated. Use a separate renderer, fixed-step simulation, input abstraction and data-driven rules. Never expose secrets in browser code. Backend and database are future choices, not installed components.
+
+Day 2: index.html owns the dashboard and ofCupEntry; src/world-cup.js binds that tile and uses matchDuration. Preserve the red theme, settings and trophy placeholder. Runtime acceptance pending.
