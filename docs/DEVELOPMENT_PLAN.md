@@ -75,3 +75,10 @@ Proposed prices for buying players:
 | 85–89 | 1,000,000 | 60,000 |
 | 90–94 | 5,000,000 | 300,000 |
 | 95–99 | 10,000,000 | 600,000 |
+
+## Owner additions — November 25, 2026
+- Days 3–4: 3D pitch and players with jerseys, names and numbers; full player realism is not guaranteed on Day 3.
+- Days 5–6: iPad/mobile virtual joystick and touch buttons for pass, through ball, shoot, sprint, skill and tackle; adapt attack/defence buttons to possession. Keep customizable desktop controls including passing, shooting and tackling.
+- Training: playable pitch drills with stationary orange mannequins, cones, free-kick walls, dribbling courses and shooting targets; integrate with 3D when ready.
+- Outstanding Day 2 extras: individual Man of the Match, playable custom tournament progression, realistic drills, action-key remapping and live browser testing/bug fixes. Not complete until implemented and tested.
+- Preserve original dates, World Cup priority, dashboard spacing, red theme, no new images, economy and all owner rules. Retest device compatibility on Day 29.
