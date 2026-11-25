@@ -99,3 +99,6 @@ Four ideas per phase; original milestones remain unchanged. Targets are prototyp
 - Day 28 (Dec 21): Street to Superstar, One Player One Life, AI Personal Coach (initial rule-based coaching prototype).
 - Day 29 (Dec 22): Friends' World Cup, private tournament prototype subject to secure accounts and multiplayer.
 Day 30: test all available prototypes. Defer unfinished work rather than break existing features. No changes to economy or existing milestones.
+
+### Day 4 kit requirement — owner approved Nov 25
+On November 27, implement distinct team-specific home and away kits for every currently included team, not only Barcelona. Show the selected kit in preview and on the pitch. Extend coverage to every new men's club, women's club and national team as they are added; use original or properly licensed designs and clearly label approximations. Test kit selection and contrasting colors. This is scheduled work, not implemented today.
