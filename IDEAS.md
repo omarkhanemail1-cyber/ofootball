@@ -65,3 +65,6 @@ Selectable tactical styles affect both manual off-ball movement and AUTO PLAY de
 
 ### Day 2 gameplay feedback and roadmap follow-up
 Owner requested true seven-second idle delay from match entry, immediate takeover, varied teammate support ahead/behind/wide with defensive cover, and smarter AUTO PLAY that avoids repeated two-player passing, carries into space and shoots intelligently. Preview patches committed and syntax checked; browser retest and owner approval pending. Team Plan tactics scheduled Days 5–7 and 14, slideshow Day 23, final testing Day 30; no live gameplay merge yet.
+
+## Individual football awards — Nov 25 owner addition
+Day 2: begin performance-based Man of the Match prototype and awards tracking. Day 13: integrate Player of the Tournament with completed competitions. Day 25: original Golden Ball ceremony inspired by Ballon d'Or, nominees, rankings and trophy presentation. Day 28: Player of the Year based on season performances and trophies, integrated with career mode. Track goals, assists, defending and saves; avoid random winners. Full ceremony and season integration remain planned; preserve economy and existing milestones.
