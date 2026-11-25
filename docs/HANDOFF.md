@@ -17,3 +17,5 @@ New ES modules under src/systems are isolated foundations, not wired into legacy
 Day 2: index.html owns the dashboard and ofCupEntry; src/world-cup.js binds that tile and uses matchDuration. Preserve the red theme, settings and trophy placeholder. Runtime acceptance pending.
 
 - Day 2 build 2026.11.25.3: added global club search, session favourites, completed-match history (50 recent), streaks, in-app notices, quick Barcelona–Real Madrid setup, keyboard guide and roadmap tracker. src/home-extras.js loads after world-cup.js. Syntax and static ID checks passed; browser and deployment verification pending. Session data resets on reload; controller and account support remain planned.
+
+- Build 2026.11.25.5: optional midnight menu theme, five session achievements, goals/conceded/clean sheets/win rate statistics and prototype kit preview. No rewards or images added. Syntax and static ID checks passed; runtime and deployment pending.
