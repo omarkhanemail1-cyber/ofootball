@@ -46,3 +46,6 @@ Target Day 17 (December 10). Inspired by the owner's three FC Mobile market scre
 - Market value, lowest/highest prices and price history graphs.
 - O-Coach consultation before buying or selling players.
 - Preserve existing economy rules; no new currency or pricing changes without owner approval. This is an idea, not an implemented feature.
+
+## Owner gameplay feedback — Nov 25
+Fix immediately on a preview branch, owner tests and approves before live merge: prevent instant repeated turnovers after J/L passes or keeper distribution; give first-touch time, vary supporting positions ahead/behind/beside carrier, small lateral steps and timed attacking runs, realistic opponent pressure, automatically select nearest suitable outfield defender when opponent attacks toward goal. Day 4: player-specific pace, playmaking and other attributes reflected in player cards and actual gameplay; real names, positions, ratings and selectable captain in squad builder. Use current-season kit colors. Preview branch day2-possession-fix; syntax checked, browser acceptance pending. No economy changes.
