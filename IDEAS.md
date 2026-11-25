@@ -62,3 +62,6 @@ Selectable tactical styles affect both manual off-ball movement and AUTO PLAY de
 - Attacking: more players push forward, including selected defenders, creating shooting and passing options while retaining minimal defensive cover.
 - Defending: most players drop back, compact coverage and approximately two advanced outlets for counterattacks.
 - Suggested integration Days 5–7 (movement and AI), with squad tactics UI Day 14; allow tactical changes during matches. Planned, not implemented; test balance and preserve existing controls and economy.
+
+### Day 2 gameplay feedback and roadmap follow-up
+Owner requested true seven-second idle delay from match entry, immediate takeover, varied teammate support ahead/behind/wide with defensive cover, and smarter AUTO PLAY that avoids repeated two-player passing, carries into space and shoots intelligently. Preview patches committed and syntax checked; browser retest and owner approval pending. Team Plan tactics scheduled Days 5–7 and 14, slideshow Day 23, final testing Day 30; no live gameplay merge yet.
