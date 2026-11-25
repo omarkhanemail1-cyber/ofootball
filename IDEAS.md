@@ -52,3 +52,6 @@ Fix immediately on a preview branch, owner tests and approves before live merge:
 
 ## AUTO PLAY — owner approved Nov 25
 Mobile/iPad and PC manual AUTO button; optional PC automatic activation after seven seconds without gameplay input; immediate manual takeover on gameplay key or touch controls; visible active indicator; AI passing, dribbling, tackling and shooting. Explain in pre-match tutorial and Day 23 startup slideshow; refine during Days 5–7. Experimental implementation on day2-possession-fix branch, syntax checked only; owner browser testing and approval required before live merge. No economy changes.
+
+### AUTO PLAY revision — owner feedback Nov 25
+Supersedes manual button, indicator and optional idle setting above: seamless built-in auto after seven seconds idle on PC, iPad and mobile; no separate button, section or toggle. Gameplay key or touch immediately restores manual control; held inputs prevent activation. Preserve existing device selection. Explain in Day 23 slideshow, not current tutorial. Preview revision committed; syntax checked, owner retest and approval pending.
