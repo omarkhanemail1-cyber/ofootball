@@ -7,3 +7,5 @@ Record ID, reproduction steps, expected/actual behavior, severity, status and fi
 - Run starter module tests and verify integration when implemented.
 
 - Day 2: fixed missing World Cup home selector and hardcoded tournament duration in source; runtime verification pending.
+
+- Restored missing intro actions mount; browser verification pending.
