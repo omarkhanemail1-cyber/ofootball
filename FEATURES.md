@@ -21,3 +21,5 @@ See docs/DEVELOPMENT_PLAN.md for all milestones. Mark complete only after testin
 - Settings centre, random opponent and club match duration: implemented, runtime unverified. Trophy cabinet: placeholder, no award integration yet.
 
 - Day 2 dashboard and direct World Cup tile implemented in source; runtime verification pending.
+
+- Day 2 build 2026.11.25.3: added global club search, session favourites, completed-match history (50 recent), streaks, in-app notices, quick Barcelona–Real Madrid setup, keyboard guide and roadmap tracker. src/home-extras.js loads after world-cup.js. Syntax and static ID checks passed; browser and deployment verification pending. Session data resets on reload; controller and account support remain planned.
