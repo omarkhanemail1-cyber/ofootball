@@ -102,3 +102,11 @@ Day 30: test all available prototypes. Defer unfinished work rather than break e
 
 ### Day 4 kit requirement — owner approved Nov 25
 On November 27, implement distinct team-specific home and away kits for every currently included team, not only Barcelona. Show the selected kit in preview and on the pitch. Extend coverage to every new men's club, women's club and national team as they are added; use original or properly licensed designs and clearly label approximations. Test kit selection and contrasting colors. This is scheduled work, not implemented today.
+
+### Team tactics and seamless AUTO PLAY — owner additions Nov 25
+- Day 5 (Nov 28): dynamic off-ball positioning, spacing, forward/sideways/backward support and defensive cover.
+- Day 6 (Nov 29): progressive passing, gap finding, dribbling and prevention of repetitive pass loops.
+- Day 7 (Nov 30): tactical AI for Tiki-Taka, Attacking and Defending; apply to AUTO PLAY and manual teammate support. Seven-second idle activation on all devices, instant manual takeover, no separate toggle.
+- Day 14 (Dec 7): Team Plan selector and in-match tactical switching; Tiki-Taka passing triangles, Attacking forward overloads with cover, Defending compact block with roughly two advanced outlets.
+- Day 23 (Dec 16): explain seamless AUTO PLAY and tactical choices in slideshow.
+- Day 30: test all styles and input modes. Day 2 preview improvements remain pending owner gameplay approval; full tactics not implemented. Existing milestones and economy unchanged.
