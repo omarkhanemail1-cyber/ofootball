@@ -13,3 +13,5 @@
 - Build 2026.11.24.2: added broadcast scoreboard styling, four derby labels and day/night pitch lighting toggle. Runtime testing pending.
 
 - Build 2026.11.24.3: added home settings, 3/5/10-minute club match duration, random opponent within selected league, and empty trophy cabinet. Runtime testing pending; settings session-only, trophies not connected.
+
+- Removed visible home soundtrack card at owner's request; Day 24 audio plans unchanged.
