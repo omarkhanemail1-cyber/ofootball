@@ -19,3 +19,5 @@ See docs/DEVELOPMENT_PLAN.md for all milestones. Mark complete only after testin
 - Broadcast scoreboard, derby labels and day/night pitch toggle: implemented in browser prototype, runtime unverified; not full 3D lighting.
 
 - Settings centre, random opponent and club match duration: implemented, runtime unverified. Trophy cabinet: placeholder, no award integration yet.
+
+- Day 2 dashboard and direct World Cup tile implemented in source; runtime verification pending.
