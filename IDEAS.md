@@ -68,3 +68,7 @@ Owner requested true seven-second idle delay from match entry, immediate takeove
 
 ## Individual football awards — Nov 25 owner addition
 Day 2: begin performance-based Man of the Match prototype and awards tracking. Day 13: integrate Player of the Tournament with completed competitions. Day 25: original Golden Ball ceremony inspired by Ballon d'Or, nominees, rankings and trophy presentation. Day 28: Player of the Year based on season performances and trophies, integrated with career mode. Track goals, assists, defending and saves; avoid random winners. Full ceremony and season integration remain planned; preserve economy and existing milestones.
+
+
+### Team strength × difficulty (owner request, Day 2)
+Combine club strength and selected difficulty independently. Elite opponents should be harder than lower-rated clubs at the same difficulty; even weaker clubs should challenge on Legendary. Use provisional ratings initially, then real roster attributes and current team data. Scale pressing, passing decisions, movement and finishing without guaranteeing results. Test in preview before release.
