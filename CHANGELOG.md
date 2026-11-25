@@ -19,3 +19,5 @@
 - 2026.11.25.1: Day 2 dashboard refresh, World Cup entry, settings/trophy navigation, responsive styling and tournament integration fixes. Browser tests pending.
 
 - Build 2026.11.25.2: restored introduction and button sound controls mount; static navigation checks passed.
+
+- Day 2 build 2026.11.25.3: added global club search, session favourites, completed-match history (50 recent), streaks, in-app notices, quick Barcelona–Real Madrid setup, keyboard guide and roadmap tracker. src/home-extras.js loads after world-cup.js. Syntax and static ID checks passed; browser and deployment verification pending. Session data resets on reload; controller and account support remain planned.
