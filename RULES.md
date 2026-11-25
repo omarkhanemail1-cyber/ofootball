@@ -16,3 +16,33 @@ Living document. Read before every development session. Add or revise rules when
 
 ## Rule history
 - 2026-11-24: Created living rules file with GitHub-first storage and portability requirements.
+
+## Additional owner-approved rules
+6. Never remove existing features without owner permission.
+7. Follow the 30-day development roadmap.
+8. Record every new idea in GitHub.
+9. Test every feature before marking it complete.
+10. Fix existing bugs before introducing major features.
+11. Never restart the entire game without owner approval.
+12. Ask permission before changing major designs or game mechanics.
+13. Create a GitHub commit after every meaningful update.
+14. Update developer handover instructions after every milestone.
+15. Never claim an unfinished feature is complete.
+16. Prioritize realistic 3D football gameplay over decorative features.
+17. Use original or properly licensed graphics, music and assets.
+18. Never spend real money without permission.
+19. Optimize for lower-end computers and mobile devices.
+20. Maintain a changelog of every major update.
+21. Protect personal information and account credentials.
+22. Keep World Cup mode a major development priority.
+23. Never change currency names, rewards or transfer prices without approval.
+24. Explain major technical decisions in simple English.
+25. The project owner has final creative authority.
+
+## Golden rule
+Never lose, forget, overwrite or falsely report project progress. Document important decisions and milestones in GitHub.
+
+## Tracking files
+Maintain CHANGELOG.md, BUGS.md, IDEAS.md, DECISIONS.md, BACKUP.md and FEATURES.md as relevant changes occur.
+
+- 2026-11-24: Owner approved rules 6–25, golden rule and six tracking files.
