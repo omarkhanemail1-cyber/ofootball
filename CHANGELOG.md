@@ -9,3 +9,5 @@
 - Removed old generated eight-note home melody at owner request; retained button sound effects and YouTube shortcut. Browser verification pending.
 
 - Added visible build identifier 2026.11.24.1 to the header to help verify Cloudflare deployments. Update identifier on future game releases. Live deployment not verified.
+
+- Build 2026.11.24.2: added broadcast scoreboard styling, four derby labels and day/night pitch lighting toggle. Runtime testing pending.
