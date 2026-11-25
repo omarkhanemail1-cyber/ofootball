@@ -152,5 +152,6 @@ const setShoot=shoot;shoot=function(){if(!restartMode)setShoot();};
 const setSwitch=switchNearest;switchNearest=function(){if(!restartMode)setSwitch();};
 
 function startThrow(side,x,y){possession=side;let i=side==="home"?8:19;place(i,x,y);moveBall(x,y);if(side==="home")activePlayer=i;else awayCarrier=i;restartMode="throw";restartTime=performance.now()+1800;markControlledPlayer();say(side==="home"?"THROW-IN — press J":"Opponent throw-in");}
-function offsideAt(p,q,side){const defenders=players.filter(z=>z.team!==side).map(z=>z.x).sort((a,b)=>side==="home"?b-a:a-b);return side==="home"?q.x>50&&q.x>Math.max(p.x,defenders[1]):q.x<50&&q.x<Math.min(p.x,defenders[1]);}
+const OFFSIDE_ENABLED=false;
+function offsideAt(p,q,side){if(!OFFSIDE_ENABLED)return false;const defenders=players.filter(z=>z.team!==side).map(z=>z.x).sort((a,b)=>side==="home"?b-a:a-b);return side==="home"?q.x>50&&q.x>Math.max(p.x,defenders[1]):q.x<50&&q.x<Math.min(p.x,defenders[1]);}
 const rulesPass=pass;pass=function(t){if(!restartMode&&!kickoffSide&&!flight&&possession==="home"&&distanceToBall(players[activePlayer])<6){let i=nearestTeammate();if(i>=0&&offsideAt(players[activePlayer],players[i],"home")){let q=players[i];possession="away";awayCarrier=17;place(17,q.x,q.y);moveBall(q.x,q.y);restartMode="free";restartTime=performance.now()+1800;say("OFFSIDE — indirect free kick");return;}}rulesPass(t);};
