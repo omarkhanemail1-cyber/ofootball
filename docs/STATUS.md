@@ -5,3 +5,5 @@ Next: verify hosting/backups, run existing prototype and document bugs; then Day
 
 ## Day 2 — Nov 25
 Dashboard refresh and direct World Cup entry committed. Fixed missing home actions selector, tournament duration mismatch and random opponent interference. Browser acceptance and deployment pending. Next: test navigation and match completion, then Day 3 stadium.
+
+Day 2 static checks passed: unique IDs, screen targets, World Cup binding, duration guards and removed soundtrack. Restored intro actions mount. Live site DNS unavailable from test environment; browser interaction testing remains pending. Build 2026.11.25.2.
