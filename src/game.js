@@ -55,7 +55,7 @@ function lessonStep(d){lesson=Math.max(0,Math.min(lessons.length-1,lesson+d));re
 function renderLesson(){let l=lessons[lesson];lessonTitle.textContent=l[0];lessonText.textContent=l[1];lessonCount.textContent=`LESSON ${lesson+1} OF ${lessons.length}`;lessonProgress.style.width=((lesson+1)/lessons.length*100)+"%"}
 function renderMoves(){moveGrid.innerHTML="";moveData.forEach(m=>{let d=document.createElement("div");d.className="card";d.innerHTML=`<span class="pill">MOVE GUIDE</span><h3>${m[0]}</h3><p>${m[1]}</p>`;moveGrid.append(d)})}
 const keys={arrowup:[0,-2.2],arrowdown:[0,2.2],arrowleft:[-2.2,0],arrowright:[2.2,0],w:[0,-2.2],s:[0,2.2],a:[-2.2,0],d:[2.2,0]};
-document.addEventListener("keydown",e=>{if(!document.getElementById("match").classList.contains("active")||paused||seconds>=matchDuration||(e.repeat&&!keys[e.key.toLowerCase()]))return;let k=e.key.toLowerCase();if(keys[k]){e.preventDefault();heldMovement.add(k)}else if(k==="j")pass();else if(k==="l")pass(true);else if(k==="k")shoot();else if(k==="q"){switchNearest()}else if(k==="e"){say("Skill move! A quick feint creates space.");let p=players[activePlayer];p.x=Math.min(95,p.x+3);document.getElementById("p"+activePlayer).style.left=p.x+"%"}else if(k===" "){e.preventDefault();tackle()}});
+document.addEventListener("keydown",e=>{if(!document.getElementById("match").classList.contains("active")||paused||seconds>=matchDuration||(e.repeat&&!keys[e.key.toLowerCase()]))return;let k=actionKey(e);if(keys[k]){e.preventDefault();heldMovement.add(k)}else if(k==="j")pass();else if(k==="l")pass(true);else if(k==="k")shoot();else if(k==="q"){switchNearest()}else if(k==="e"){say("Skill move! A quick feint creates space.");let p=players[activePlayer];p.x=Math.min(95,p.x+3);document.getElementById("p"+activePlayer).style.left=p.x+"%"}else if(k===" "){e.preventDefault();tackle()}});
 renderLeagues();renderMoves();renderLesson();
 
 // Day 1: visibly identify the controlled player.
@@ -90,8 +90,8 @@ requestAnimationFrame(gameplayFrame);
 const stats={shots:0,passes:0,saves:0,homeTime:0,totalTime:0};
 let difficulty="Amateur",training=false,chargeStart=0,aim=[1,0];
 try{difficulty=localStorage.getItem("ofDifficulty")||"Amateur";}catch(e){}
-function difficultyFactor(){return ({Beginner:.65,Amateur:1,Professional:1.25,Legendary:1.5})[difficulty]||1;}
-const extraPanel=document.createElement("div");extraPanel.className="card";extraPanel.innerHTML='<div class="toolbar"><label>Difficulty <select id="ofDifficulty"><option>Beginner</option><option>Amateur</option><option>Professional</option><option>Legendary</option></select></label><button id="ofTraining">Training arena</button><button id="ofExitMatch">Exit match</button></div><div>Stamina <progress id="ofEnergy" max="100" value="100"></progress> Shot power <progress id="ofPower" max="100" value="0"></progress></div><canvas id="ofRadar" width="220" height="120" style="max-width:100%;margin-top:10px"></canvas><p id="ofStats"></p>';
+function difficultyFactor(){return ({Beginner:.65,Amateur:1,Professional:1.25,"World Class":1.4,Legendary:1.5})[difficulty]||1;}
+const extraPanel=document.createElement("div");extraPanel.className="card";extraPanel.innerHTML='<div class="toolbar"><label>Difficulty <select id="ofDifficulty"><option>Beginner</option><option>Amateur</option><option>Professional</option><option>World Class</option><option>Legendary</option></select></label><button id="ofTraining">Training arena</button><button id="ofExitMatch">Exit match</button></div><div>Stamina <progress id="ofEnergy" max="100" value="100"></progress> Shot power <progress id="ofPower" max="100" value="0"></progress></div><canvas id="ofRadar" width="220" height="120" style="max-width:100%;margin-top:10px"></canvas><p id="ofStats"></p>';
 document.getElementById("match").append(extraPanel);
 const difficultySelect=document.getElementById("ofDifficulty");difficultySelect.value=difficulty;difficultySelect.onchange=()=>{difficulty=difficultySelect.value;try{localStorage.setItem("ofDifficulty",difficulty)}catch(e){}};
 document.getElementById("ofExitMatch").onclick=()=>{training=false;show("home")};
@@ -101,7 +101,7 @@ const moveExtras=movePlayer;movePlayer=function(dx,dy){aim=[dx,dy];moveExtras(dx
 nearestTeammate=function(){const p=players[activePlayer];let best=-1,cost=Infinity;players.forEach((q,i)=>{if(q.team!=="home"||i===activePlayer)return;const dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy),dot=(dx*aim[0]+dy*aim[1])/(Math.max(.01,d*Math.hypot(...aim)));const c=d-18*dot;if(c<cost){cost=c;best=i;}});return best;};
 const passExtras=pass;pass=function(t){const before=activePlayer;passExtras(t);if(before!==activePlayer)stats.passes++;};
 const shootExtras=shoot;shoot=function(){if(!chargeStart)chargeStart=performance.now();};
-document.addEventListener("keyup",e=>{if(e.key.toLowerCase()!=="k"||!chargeStart)return;const power=Math.min(1,(performance.now()-chargeStart)/900);chargeStart=0;if(paused||seconds>=matchDuration||!document.getElementById("match").classList.contains("active"))return;shootExtras();if(flight&&flight.side==="home"){flight.duration*=1.3-.65*power;stats.shots++;}});
+document.addEventListener("keyup",e=>{if(actionKey(e)!=="k"||!chargeStart)return;const power=Math.min(1,(performance.now()-chargeStart)/900);chargeStart=0;if(paused||seconds>=matchDuration||!document.getElementById("match").classList.contains("active"))return;shootExtras();if(flight&&flight.side==="home"){flight.duration*=1.3-.65*power;stats.shots++;}});
 window.addEventListener("blur",()=>{chargeStart=0;});
 const chaseExtras=chase;chase=function(i,x,y,dt){if(training&&i>=12)return;chaseExtras(i,x,y,dt);};
 const radar=document.getElementById("ofRadar"),ctx=radar.getContext("2d");
@@ -245,3 +245,38 @@ const awardReset=resetMatch;resetMatch=function(){awardRows=Array.from({length:2
 const awardPass=pass;pass=function(t){const from=activePlayer,was=possession;awardPass(t);if(was==="home"&&possession==="home"&&from!==activePlayer&&awardRows[from]){awardRows[from].passes++;awardLastPass={from,to:activePlayer};}};
 const awardTackle=tackle;tackle=function(){const was=possession;awardTackle();if(was==="away"&&possession==="home"&&awardRows[activePlayer]){awardRows[activePlayer].tackles++;awardLastPass=null;}};
 const awardTick=tick;tick=function(){awardTick();if(seconds<matchDuration||!awardPanel.hidden)return;const ranked=awardRows.map((a,i)=>({a,i,points:a.goals*5+a.assists*3+a.saves*2+a.tackles*2+a.passes*.25})).sort((a,b)=>b.points-a.points);const best=ranked[0];awardPanel.replaceChildren();const h=document.createElement("h3");h.textContent="PLAYER OF THE MATCH";awardPanel.append(h);const line=document.createElement("p");line.textContent=best.points>0?(best.i<11?homeClub:awayClub)+" • Player "+(best.i%11+1)+" — "+best.a.goals+" goals, "+best.a.assists+" assists, "+best.a.passes+" passes, "+best.a.tackles+" tackles, "+best.a.saves+" saves":"No recorded individual performance yet.";awardPanel.append(line);awardPanel.hidden=false;};
+
+/* Day 2 additional playable previews */
+const actionDefaults={j:"j",l:"l",k:"k"," ":" "};
+let actionBindings={...actionDefaults};
+try{const saved=JSON.parse(localStorage.getItem("ofActionBindings"));if(saved)actionBindings={...actionDefaults,...saved};}catch(e){}
+function actionKey(e){const k=e.key.toLowerCase();if(!e.isTrusted)return k;for(const a of Object.keys(actionBindings))if(actionBindings[a]===k)return a;return Object.hasOwn(actionDefaults,k)?"__unused":k;}
+(()=>{
+const hub=document.getElementById("ofExtras"),grid=hub.querySelector(".grid");
+const el=(tag,parent,txt)=>{const n=document.createElement(tag);if(txt)n.textContent=txt;parent.append(n);return n;};
+const panel=name=>{const p=el("details",grid);p.className="card";el("summary",p,name);return p;};
+const btn=(p,t,f)=>{const b=el("button",p,t);b.type="button";b.onclick=f;return b;};
+const select=(p,items)=>{const n=el("select",p);for(const t of items)el("option",n,t);return n;};
+const controls=panel("Custom action keys"),inputs={};
+for(const [k,name] of Object.entries({j:"Pass",l:"Through pass",k:"Shoot"," ":"Tackle"})){const l=el("label",controls,name+" ");const i=el("input",l);i.size=3;i.maxLength=1;i.value=actionBindings[k];inputs[k]=i;}
+const msg=el("p",controls);
+btn(controls,"Apply action keys",()=>{const vals=Object.values(inputs).map(i=>i.value.toLowerCase());if(vals.some(k=>!k||k in keys||["q","e"].includes(k))||new Set(vals).size!==4){msg.textContent="Choose four distinct keys, not movement, Q or E.";return;}Object.keys(inputs).forEach((k,i)=>actionBindings[k]=vals[i]);try{localStorage.setItem("ofActionBindings",JSON.stringify(actionBindings));}catch(e){}msg.textContent="Saved. Touch buttons keep their original actions.";});
+btn(controls,"Restore defaults",()=>{actionBindings={...actionDefaults};Object.keys(inputs).forEach(k=>inputs[k].value=actionBindings[k]);try{localStorage.removeItem("ofActionBindings");}catch(e){}msg.textContent="Defaults restored.";});
+const diff=panel("Match difficulty"),ds=select(diff,["Beginner","Amateur","Professional","World Class","Legendary"]);ds.value=difficulty;ds.onchange=()=>{difficultySelect.value=ds.value;difficultySelect.onchange();};
+const statPanel=el("div",document.getElementById("match"));statPanel.className="card";const statText=el("p",statPanel);
+let homeShots=0,awayShots=0,lastFlight=null;
+const oldReset=resetMatch;resetMatch=function(){homeShots=awayShots=0;lastFlight=null;oldReset();};
+function statFrame(){requestAnimationFrame(statFrame);if(!document.getElementById("match").classList.contains("active"))return;if(flight&&flight!==lastFlight){if(flight.side==="home")homeShots++;else awayShots++;}lastFlight=flight;const h=awardRows.slice(0,11),a=awardRows.slice(11),sum=(rows,k)=>rows.reduce((n,p)=>n+p[k],0),pos=stats.totalTime?Math.round(100*stats.homeTime/stats.totalTime):50;statText.textContent="MATCH STATS | Possession "+pos+"% / "+(100-pos)+"% | Shots "+homeShots+" / "+awayShots+" | Saves "+sum(h,"saves")+" / "+sum(a,"saves")+" | Home passes "+stats.passes+" | Home tackles won "+sum(h,"tackles");}requestAnimationFrame(statFrame);
+const pen=panel("Penalty shootout"),penText=el("p",pen,"Start a five-kick shootout."),aims=["Left","Centre","Right"];let kicks=0,ph=0,pa=0,phase="idle";
+const renderPen=()=>{penText.textContent="You "+ph+" – "+pa+" Opponent | Round "+Math.min(kicks+1,5)+(kicks>=5?" (sudden death if tied)":"")+" | "+phase;};
+btn(pen,"Start shootout",()=>{kicks=ph=pa=0;phase="Shoot";renderPen();});
+for(const dir of aims)btn(pen,dir,()=>{if(phase==="Shoot"){if(dir!==aims[Math.floor(Math.random()*3)])ph++;phase="Save";}else if(phase==="Save"){if(dir!==aims[Math.floor(Math.random()*3)])pa++;kicks++;phase=(kicks>=5&&ph!==pa)||(kicks<5&&Math.abs(ph-pa)>5-kicks)?(ph>pa?"You win!":"Opponent wins!"):"Shoot";}renderPen();});
+const tour=panel("Custom knockout tournament"),clubs=Object.values(LEAGUES).flat(),picks=Array.from({length:4},(_,i)=>{const n=select(tour,clubs);n.selectedIndex=i;return n;}),tmsg=el("p",tour);let bracket=null;
+btn(tour,"Create tournament",()=>{const c=picks.map(n=>n.value);if(new Set(c).size!==4){tmsg.textContent="Select four different clubs.";return;}bracket={home:c[0],opponent:c[1],other:c.slice(2),round:1,playing:false};tmsg.textContent="Semifinal: "+c[0]+" vs "+c[1]+"; "+c[2]+" vs "+c[3];});
+btn(tour,"Play next round",()=>{if(!bracket||bracket.playing||bracket.round>2)return;homeClub=bracket.home;awayClub=bracket.opponent;setupKits();startMatch();bracket.playing=true;});
+const oldTick=tick;tick=function(){oldTick();if(!bracket||!bracket.playing||seconds<matchDuration)return;bracket.playing=false;if(homeClub!==bracket.home||awayClub!==bracket.opponent)return;if(score[0]===score[1]){tmsg.textContent="Draw: replay this round to decide the winner.";return;}if(score[0]<score[1]){bracket.round=3;tmsg.textContent="Eliminated by "+awayClub;return;}if(bracket.round===1){bracket.round=2;bracket.opponent=bracket.other[Math.floor(Math.random()*2)];tmsg.textContent="Final: "+bracket.home+" vs "+bracket.opponent+" (other semifinal simulated).";}else{bracket.round=3;tmsg.textContent="🏆 Champion: "+bracket.home;}};
+const drill=panel("Playable skill drills"),mode=select(drill,["Shooting","Passing","Dribbling"]),canvas=el("canvas",drill);canvas.width=300;canvas.height=180;canvas.style.cssText="width:100%;max-width:300px;touch-action:none";const c=canvas.getContext("2d"),dm=el("p",drill);let points=0,attempts=0,target={x:240,y:90},ball={x:40,y:90},running=false;
+function draw(){c.fillStyle="#176b42";c.fillRect(0,0,300,180);c.strokeStyle="white";c.strokeRect(5,5,290,170);c.fillStyle="#ffae38";c.beginPath();c.arc(target.x,target.y,15,0,Math.PI*2);c.fill();c.fillStyle="white";c.beginPath();c.arc(ball.x,ball.y,7,0,Math.PI*2);c.fill();dm.textContent=points+" points / "+attempts+" attempts. "+(running?"Tap the orange target.":"Start a drill.");}
+btn(drill,"Start drill",()=>{points=attempts=0;running=true;ball={x:40,y:90};target={x:240,y:90};draw();});
+canvas.addEventListener("pointerdown",e=>{if(!running)return;const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)*300/r.width,y=(e.clientY-r.top)*180/r.height;attempts++;if(Math.hypot(x-target.x,y-target.y)<19)points++;ball={x,y};target={x:mode.value==="Shooting"?270:30+Math.random()*240,y:25+Math.random()*130};if(attempts>=10)running=false;draw();});draw();
+})();
