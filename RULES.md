@@ -40,6 +40,8 @@ Living document. Read before every development session. Add or revise rules when
 25. The project owner has final creative authority.
 26. End-of-day rule: When the owner says “done for the day,” stop starting new development work. Wrap up briefly, ensure meaningful completed changes are saved to GitHub, record only essential progress, blockers and the next starting point as needed, and stop. Do not create unnecessary files or save every conversational detail. Resume from GitHub when the owner returns; do not continue development in the background.
 
+27. Follow all owner-approved project rules throughout every development session. Before making changes, read the latest RULES.md, check the proposed work against every applicable rule, and resolve conflicts with the owner rather than ignoring a rule.
+
 ## Golden rule
 Never lose, forget, overwrite or falsely report project progress. Document important decisions and milestones in GitHub.
 
@@ -48,3 +50,5 @@ Maintain CHANGELOG.md, BUGS.md, IDEAS.md, DECISIONS.md, BACKUP.md and FEATURES.m
 
 - 2026-11-24: Owner approved rules 6–25, golden rule and six tracking files.
 - 2026-11-24: Owner added rule 26 (end-of-day wrap-up).
+
+- 2026-11-25: Owner added rule 27, requiring adherence to all project rules.
