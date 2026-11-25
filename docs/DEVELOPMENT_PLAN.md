@@ -82,3 +82,20 @@ Proposed prices for buying players:
 - Training: playable pitch drills with stationary orange mannequins, cones, free-kick walls, dribbling courses and shooting targets; integrate with 3D when ready.
 - Outstanding Day 2 extras: individual Man of the Match, playable custom tournament progression, realistic drills, action-key remapping and live browser testing/bug fixes. Not complete until implemented and tested.
 - Preserve original dates, World Cup priority, dashboard spacing, red theme, no new images, economy and all owner rules. Retest device compatibility on Day 29.
+
+## Twelve distinctive ideas — owner-approved phased roadmap (Nov 25)
+Four ideas per phase; original milestones remain unchanged. Targets are prototypes, not completion guarantees.
+### Phase 1 — Day 2 (Nov 25): begin lightweight prototypes
+- Comeback Challenge: 0–3 down, 15 minutes remaining.
+- Custom Training Drills: basic cone/mannequin layout editor.
+- Football Laboratory: isolated physics sandbox.
+- Goal Celebration Creator: basic celebration selection/customization prototype; integrate animations on Day 25.
+### Phase 2 — Days 8–14
+- Day 9 (Dec 2): Referee Mode, after rules and VAR foundations.
+- Day 10 (Dec 3): Football Universe, custom clubs/leagues.
+- Day 12 (Dec 5): Create Your Own Country, integrate with World Cup.
+- Day 14 (Dec 7): Football Time Machine, historical squad prototype; secondary to World Cup.
+### Phase 3 — Days 28–29
+- Day 28 (Dec 21): Street to Superstar, One Player One Life, AI Personal Coach (initial rule-based coaching prototype).
+- Day 29 (Dec 22): Friends' World Cup, private tournament prototype subject to secure accounts and multiplayer.
+Day 30: test all available prototypes. Defer unfinished work rather than break existing features. No changes to economy or existing milestones.
