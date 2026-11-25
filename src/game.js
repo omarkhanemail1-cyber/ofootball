@@ -54,7 +54,7 @@ function lessonStep(d){lesson=Math.max(0,Math.min(lessons.length-1,lesson+d));re
 function renderLesson(){let l=lessons[lesson];lessonTitle.textContent=l[0];lessonText.textContent=l[1];lessonCount.textContent=`LESSON ${lesson+1} OF ${lessons.length}`;lessonProgress.style.width=((lesson+1)/lessons.length*100)+"%"}
 function renderMoves(){moveGrid.innerHTML="";moveData.forEach(m=>{let d=document.createElement("div");d.className="card";d.innerHTML=`<span class="pill">MOVE GUIDE</span><h3>${m[0]}</h3><p>${m[1]}</p>`;moveGrid.append(d)})}
 const keys={arrowup:[0,-2.2],arrowdown:[0,2.2],arrowleft:[-2.2,0],arrowright:[2.2,0],w:[0,-2.2],s:[0,2.2],a:[-2.2,0],d:[2.2,0]};
-document.addEventListener("keydown",e=>{if(!document.getElementById("match").classList.contains("active")||paused||seconds>=300||(e.repeat&&!keys[e.key.toLowerCase()]))return;let k=e.key.toLowerCase();if(keys[k]){e.preventDefault();let m=keys[k],boost=e.shiftKey?1.6:1;movePlayer(m[0]*boost,m[1]*boost)}else if(k==="j")pass();else if(k==="l")pass(true);else if(k==="k")shoot();else if(k==="q"){activePlayer=(activePlayer+1)%11;say("Player "+(activePlayer+1)+" selected.")}else if(k==="e"){say("Skill move! A quick feint creates space.");let p=players[activePlayer];p.x=Math.min(95,p.x+3);document.getElementById("p"+activePlayer).style.left=p.x+"%"}else if(k===" "){e.preventDefault();tackle()}});
+document.addEventListener("keydown",e=>{if(!document.getElementById("match").classList.contains("active")||paused||seconds>=300||(e.repeat&&!keys[e.key.toLowerCase()]))return;let k=e.key.toLowerCase();if(keys[k]){e.preventDefault();heldMovement.add(k)}else if(k==="j")pass();else if(k==="l")pass(true);else if(k==="k")shoot();else if(k==="q"){activePlayer=(activePlayer+1)%11;say("Player "+(activePlayer+1)+" selected.")}else if(k==="e"){say("Skill move! A quick feint creates space.");let p=players[activePlayer];p.x=Math.min(95,p.x+3);document.getElementById("p"+activePlayer).style.left=p.x+"%"}else if(k===" "){e.preventDefault();tackle()}});
 renderLeagues();renderMoves();renderLesson();
 
 // Day 1: visibly identify the controlled player.
@@ -68,7 +68,7 @@ const resetCore=resetMatch;
 resetMatch=function(){flight=null;awayCarrier=-1;motionUntil.clear();resetCore();};
 function paintPlayer(i){const p=players[i],el=document.getElementById("p"+i);if(!el)return;el.style.left=p.x+"%";el.style.top=p.y+"%";motionUntil.set(i,performance.now()+180);el.classList.remove("still");}
 function distanceToBall(p){return Math.hypot(p.x-ballPos.x,p.y-ballPos.y);}
-movePlayer=function(dx,dy){const p=players[activePlayer];if(!p)return;const carrying=possession==="home"&&!flight&&distanceToBall(p)<6;const sprint=Math.hypot(dx,dy)>3; if(sprint)stamina=Math.max(0,stamina-1.4); const speed=p.pace/84*(sprint&&stamina<15?.65:1);p.x=Math.max(4,Math.min(96,p.x+dx*speed));p.y=Math.max(5,Math.min(95,p.y+dy*speed));paintPlayer(activePlayer);if(carrying)moveBall(p.x+2,p.y);};
+movePlayer=function(dx,dy){const p=players[activePlayer];if(!p)return;const carrying=possession==="home"&&!flight&&distanceToBall(p)<6;const sprint=heldSprint; if(sprint)stamina=Math.max(0,stamina-Math.hypot(dx,dy)*.35); const speed=p.pace/84*(sprint&&stamina<15?.65:1);p.x=Math.max(4,Math.min(96,p.x+dx*speed));p.y=Math.max(5,Math.min(95,p.y+dy*speed));paintPlayer(activePlayer);if(carrying)moveBall(p.x+2,p.y);};
 const oldPass=pass;
 pass=function(through=false){if(flight||possession!=="home"||distanceToBall(players[activePlayer])>6){say("Get close to the ball before passing.");return;}oldPass(through);markControlledPlayer();};
 shoot=function(){const p=players[activePlayer];if(flight||possession!=="home"||distanceToBall(p)>6){say("Get close to the ball before shooting.");return;}const targetY=50+(Math.random()-.5)*(p.x>70?20:48);flight={x:ballPos.x,y:ballPos.y,targetY,side:"home",elapsed:0,duration:Math.max(.25,(98-ballPos.x)/65)};say("Shot on goal!");};
@@ -106,3 +106,15 @@ function extraFrame(){requestAnimationFrame(extraFrame);if(!document.getElementB
 requestAnimationFrame(extraFrame);
 
 function kitPattern(club,kit,c){if(club==="Barcelona")return kit==="home"?`repeating-linear-gradient(90deg,${c[0]} 0 25%,${c[1]} 25% 50%)`:`radial-gradient(circle at 50% 43%,#f6dc46 0 9%,transparent 10%),linear-gradient(110deg,${c[0]} 35%,${c[1]} 50%,${c[0]} 65%)`;return `linear-gradient(90deg,${c[0]} 0 48%,${c[1]} 48% 55%,${c[0]} 55%)`;}
+
+ // Frame-based keyboard movement independent of keyboard repeat rate.
+const heldMovement=new Set();let heldSprint=false, movementTime=0, vx=0,vy=0;
+document.addEventListener("keydown",e=>{if(e.key==="Shift")heldSprint=true;});
+document.addEventListener("keyup",e=>{heldMovement.delete(e.key.toLowerCase());if(e.key==="Shift")heldSprint=false;});
+window.addEventListener("blur",()=>{heldMovement.clear();heldSprint=false;vx=vy=0;});
+function smoothMovement(now){requestAnimationFrame(smoothMovement);const dt=Math.min(.04,(now-movementTime)/1000||0);movementTime=now;
+if(!document.getElementById("match").classList.contains("active")||paused||seconds>=300||players.length!==22){heldMovement.clear();vx=vy=0;return;}
+let x=0,y=0;for(const k of heldMovement){x+=keys[k][0];y+=keys[k][1];}const d=Math.hypot(x,y),speed=heldSprint?18:11;const blend=1-Math.exp(-dt*18);vx+=( (d?x/d*speed:0)-vx)*blend;vy+=((d?y/d*speed:0)-vy)*blend;if(Math.hypot(vx,vy)>.35)movePlayer(vx*dt,vy*dt);
+}
+requestAnimationFrame(smoothMovement);
+const smoothStyle=document.createElement("style");smoothStyle.textContent=".player{transition:none}";document.head.append(smoothStyle);
