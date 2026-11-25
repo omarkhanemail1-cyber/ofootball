@@ -110,3 +110,6 @@ On November 27, implement distinct team-specific home and away kits for every cu
 - Day 14 (Dec 7): Team Plan selector and in-match tactical switching; Tiki-Taka passing triangles, Attacking forward overloads with cover, Defending compact block with roughly two advanced outlets.
 - Day 23 (Dec 16): explain seamless AUTO PLAY and tactical choices in slideshow.
 - Day 30: test all styles and input modes. Day 2 preview improvements remain pending owner gameplay approval; full tactics not implemented. Existing milestones and economy unchanged.
+
+## Individual football awards — Nov 25 owner addition
+Day 2: begin performance-based Man of the Match prototype and awards tracking. Day 13: integrate Player of the Tournament with completed competitions. Day 25: original Golden Ball ceremony inspired by Ballon d'Or, nominees, rankings and trophy presentation. Day 28: Player of the Year based on season performances and trophies, integrated with career mode. Track goals, assists, defending and saves; avoid random winners. Full ceremony and season integration remain planned; preserve economy and existing milestones.
