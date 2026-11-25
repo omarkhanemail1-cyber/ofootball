@@ -49,3 +49,6 @@ Target Day 17 (December 10). Inspired by the owner's three FC Mobile market scre
 
 ## Owner gameplay feedback — Nov 25
 Fix immediately on a preview branch, owner tests and approves before live merge: prevent instant repeated turnovers after J/L passes or keeper distribution; give first-touch time, vary supporting positions ahead/behind/beside carrier, small lateral steps and timed attacking runs, realistic opponent pressure, automatically select nearest suitable outfield defender when opponent attacks toward goal. Day 4: player-specific pace, playmaking and other attributes reflected in player cards and actual gameplay; real names, positions, ratings and selectable captain in squad builder. Use current-season kit colors. Preview branch day2-possession-fix; syntax checked, browser acceptance pending. No economy changes.
+
+## AUTO PLAY — owner approved Nov 25
+Mobile/iPad and PC manual AUTO button; optional PC automatic activation after seven seconds without gameplay input; immediate manual takeover on gameplay key or touch controls; visible active indicator; AI passing, dribbling, tackling and shooting. Explain in pre-match tutorial and Day 23 startup slideshow; refine during Days 5–7. Experimental implementation on day2-possession-fix branch, syntax checked only; owner browser testing and approval required before live merge. No economy changes.
