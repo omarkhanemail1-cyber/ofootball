@@ -173,12 +173,20 @@ function updateControl(now){
 const supportBeforeFix=supportAI;
 supportAI=function(dt){
  supportBeforeFix(dt);if(training)return;
- const t=performance.now()/1000;
+ const t=performance.now()/1000, attacking=possession==="home";
+ const carrier=players[activePlayer];if(!carrier)return;
  for(let i=1;i<11;i++){if(i===activePlayer)continue;
- const [x,y]=shape[i];const attacking=possession==="home";
- const shift=(ballPos.x-50)*.45;
- const run=attacking&&i>=5?Math.max(0,Math.sin(t*.7+i*1.7))*12:0;
- chase(i,Math.max(7,Math.min(92,x+shift+run)),Math.max(7,Math.min(93,y+Math.sin(t*.8+i*2)*5)),dt*.65);
+ const [x,y]=shape[i],p=players[i],phase=t*.38+i*2.39;
+ let tx=x+(ballPos.x-50)*.35,ty=y+(ballPos.y-50)*.18;
+ if(attacking){
+ const role=(i+Math.floor(t/12))%4;
+ const dx=[-19,17,4,29][role],dy=[5,-9,22,-18][role];
+ const blend=i<5?.30:.72;
+ tx=tx*(1-blend)+(carrier.x+dx+Math.sin(phase)*9)*blend;
+ ty=ty*(1-blend)+(carrier.y+dy+Math.cos(phase*.8)*11)*blend;
+ }else{tx+=Math.sin(phase)*7;ty+=Math.cos(phase)*8;}
+ for(let j=1;j<11;j++){if(j===i)continue;const q=players[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.hypot(dx,dy);if(d<9&&d>.01){tx+=dx/d*(9-d);ty+=dy/d*(9-d);}}
+ chase(i,Math.max(7,Math.min(92,tx)),Math.max(7,Math.min(93,ty)),dt*.85);
  }
 };
 const nearestBeforeFix=nearestTeammate;
@@ -204,11 +212,13 @@ document.getElementById("match").addEventListener("pointerdown",e=>{autoPointers
 document.addEventListener("pointermove",e=>{if(autoPointers.has(e.pointerId))autoManual();},true);
 for(const event of ["pointerup","pointercancel","lostpointercapture"])document.addEventListener(event,e=>{if(autoPointers.delete(e.pointerId))autoManual();},true);
 window.addEventListener("blur",()=>{autoPointers.clear();autoManual();});
-const autoReset=resetMatch;resetMatch=function(){setAuto(false);autoActionAt=0;autoReset();};
+const autoReset=resetMatch;resetMatch=function(){autoReset();setAuto(false);autoActionAt=0;autoPointers.clear();autoWasEligible=false;};
+let autoWasEligible=false;
 function autoFrame(now){requestAnimationFrame(autoFrame);const dt=Math.min(.04,(now-autoLastFrame)/1000||0);autoLastFrame=now;
-if(!document.getElementById("match").classList.contains("active")||paused||seconds>=matchDuration||players.length!==22||training||document.hidden){autoLastInput=now;return;}
+if(!document.getElementById("match").classList.contains("active")||paused||seconds>=matchDuration||players.length!==22||training||document.hidden){autoWasEligible=false;setAuto(false);return;}
+if(!autoWasEligible){autoWasEligible=true;setAuto(false);return;}
 if(heldMovement.size||heldSprint||autoPointers.size){autoManual();return;}
-if(!autoPlaying&&now-autoLastInput>=7000)setAuto(true);
+if(!autoPlaying&&performance.now()-autoLastInput>=7000)setAuto(true);
 if(!autoPlaying||flight)return;
 if(kickoffSide||restartMode){if(possession==="home"&&now>autoActionAt){pass(false);autoActionAt=now+900;}return;}
 let p=players[activePlayer];if(possession==="away"){let best=1;for(let i=2;i<11;i++)if(distanceToBall(players[i])<distanceToBall(players[best]))best=i;if(activePlayer!==best){activePlayer=best;markControlledPlayer();}p=players[activePlayer];const dx=ballPos.x-p.x,dy=ballPos.y-p.y,d=Math.hypot(dx,dy);if(d>2)movePlayer(dx/d*dt*13,dy/d*dt*13);if(d<4&&now>autoActionAt){tackle();autoActionAt=now+650;}return;}
