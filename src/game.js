@@ -190,9 +190,10 @@ supportAI=function(dt){
  }
 };
 const nearestBeforeFix=nearestTeammate;
-let throughIntent=false;
+let throughIntent=false, autoPassTarget=-1;
+let autoRecent=[],autoCarryUntil=0;
 nearestTeammate=function(){
- const p=players[activePlayer];if(!p)return nearestBeforeFix();
+ const p=players[activePlayer];if(!p)return nearestBeforeFix();if(autoPassTarget>0&&autoPassTarget!==activePlayer)return autoPassTarget;
  let best=-1,cost=Infinity;
  for(let i=1;i<11;i++){if(i===activePlayer)continue;const q=players[i],dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);const space=Math.min(...players.slice(11).map(o=>Math.hypot(o.x-q.x,o.y-q.y)));const direction=(dx*aim[0]+dy*aim[1])/Math.max(1,d*Math.hypot(...aim));const c=d-12*direction-2*Math.min(space,15)-(throughIntent?dx*.7:0);if(c<cost){cost=c;best=i;}}
  return best;
@@ -205,7 +206,7 @@ resetMatch=function(){lastControlSide=null;lastControlPlayer=-1;lastAutoSwitch=0
 /* Experimental automatic play; manual input always takes priority. */
 let autoPlaying=false,autoLastInput=performance.now(),autoLastFrame=0,autoActionAt=0;
 const autoPointers=new Set();
-function setAuto(on){autoPlaying=on;if(!on)autoLastInput=performance.now();}
+function setAuto(on){if(on&&!autoPlaying){autoRecent=[];autoCarryUntil=performance.now()+900;}autoPlaying=on;if(!on)autoLastInput=performance.now();}
 function autoManual(){setAuto(false);}
 document.addEventListener("keydown",e=>{if(e.key.toLowerCase() in keys||/^[a-z ]$/i.test(e.key)||e.key==="Shift")autoManual();},true);
 document.getElementById("match").addEventListener("pointerdown",e=>{autoPointers.add(e.pointerId);autoManual();},true);
@@ -221,10 +222,18 @@ if(heldMovement.size||heldSprint||autoPointers.size){autoManual();return;}
 if(!autoPlaying&&performance.now()-autoLastInput>=7000)setAuto(true);
 if(!autoPlaying||flight)return;
 if(kickoffSide||restartMode){if(possession==="home"&&now>autoActionAt){pass(false);autoActionAt=now+900;}return;}
-let p=players[activePlayer];if(possession==="away"){let best=1;for(let i=2;i<11;i++)if(distanceToBall(players[i])<distanceToBall(players[best]))best=i;if(activePlayer!==best){activePlayer=best;markControlledPlayer();}p=players[activePlayer];const dx=ballPos.x-p.x,dy=ballPos.y-p.y,d=Math.hypot(dx,dy);if(d>2)movePlayer(dx/d*dt*13,dy/d*dt*13);if(d<4&&now>autoActionAt){tackle();autoActionAt=now+650;}return;}
+let p=players[activePlayer];if(possession==="away"){autoRecent=[];autoCarryUntil=now+900;let best=1;for(let i=2;i<11;i++)if(distanceToBall(players[i])<distanceToBall(players[best]))best=i;if(activePlayer!==best){activePlayer=best;markControlledPlayer();}p=players[activePlayer];const dx=ballPos.x-p.x,dy=ballPos.y-p.y,d=Math.hypot(dx,dy);if(d>2)movePlayer(dx/d*dt*13,dy/d*dt*13);if(d<4&&now>autoActionAt){tackle();autoActionAt=now+650;}return;}
 if(distanceToBall(p)>6){const dx=ballPos.x-p.x,dy=ballPos.y-p.y,d=Math.hypot(dx,dy);movePlayer(dx/d*dt*12,dy/d*dt*12);return;}
-if(p.x>78&&now>autoActionAt){shootExtras();if(flight)stats.shots++;autoActionAt=now+1200;return;}
-const pressure=Math.min(...players.slice(11).map(q=>Math.hypot(q.x-p.x,q.y-p.y)));if(pressure<7&&now>autoActionAt){pass(true);autoActionAt=now+1000;return;}
-movePlayer(dt*11,Math.max(-5,Math.min(5,(50-p.y)*.2))*dt);
+const opponents=players.slice(11),space=q=>Math.min(...opponents.map(o=>Math.hypot(o.x-q.x,o.y-q.y)));
+const pressure=space(p);
+if(p.x>73&&Math.abs(p.y-50)<27&&now>autoActionAt){shootExtras();if(flight)stats.shots++;autoActionAt=now+1500;autoRecent=[];return;}
+if(now>autoActionAt&&now>autoCarryUntil&&(pressure<6||p.x<65)){
+ let best=-1,bestValue=-Infinity;
+ for(let i=1;i<11;i++){if(i===activePlayer||autoRecent.includes(i))continue;const q=players[i],dx=q.x-p.x,d=Math.hypot(dx,q.y-p.y);if(d<8||d>45||dx<5||space(q)<5)continue;const value=dx*1.5+space(q)*1.2-d*.25;if(value>bestValue){bestValue=value;best=i;}}
+ if(best>=0){const from=activePlayer;autoPassTarget=best;try{pass(true);}finally{autoPassTarget=-1;}if(activePlayer!==from){autoRecent.push(from);if(autoRecent.length>3)autoRecent.shift();autoCarryUntil=now+1600;autoActionAt=now+1800;return;}}
+}
+let bestHeading=0,bestClearance=-Infinity;
+for(const heading of [-.65,0,.65]){const q={x:Math.min(94,p.x+8),y:Math.max(8,Math.min(92,p.y+heading*8))};const value=space(q)-Math.abs(q.y-50)*.12;if(value>bestClearance){bestClearance=value;bestHeading=heading;}}
+movePlayer(dt*12,dt*12*bestHeading);
 }
 requestAnimationFrame(autoFrame);
