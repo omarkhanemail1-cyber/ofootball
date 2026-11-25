@@ -1,0 +1,11 @@
+(()=>{const $=id=>document.getElementById(id),field=$('field'),match=$('match'),panel=$('ofMatchTools');
+for(const [id,attr] of [['ofPitch','pitch'],['ofWeather','weather'],['ofStadium','stadium'],['ofBoard','board'],['ofQuality','quality']])$(id).onchange=()=>match.dataset[attr]=$(id).value;
+$('ofContrast').onchange=()=>document.body.classList.toggle('of-contrast',$('ofContrast').checked);
+$('ofMotion').onchange=()=>document.body.classList.toggle('of-reduced',$('ofMotion').checked);
+$('ofFullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen()}catch(e){$('ofToolStatus').textContent='Fullscreen unavailable in this browser.'}};
+let previous=[0,0],half=false,finished=false,coin='';
+const reset=resetMatch;resetMatch=function(){previous=[0,0];half=false;finished=false;coin=Math.random()<.5?'Heads':'Tails';$('ofCoin').textContent='Coin toss: '+coin+' (ceremonial)';$('ofResult').textContent='';$('ofHalf').textContent='';$('ofGoal').textContent='';return reset.apply(this,arguments)};
+function refresh(){if(!match.classList.contains('active'))return;$('ofPauseTools').hidden=!paused||seconds>=matchDuration;if(score[0]!==previous[0]||score[1]!==previous[1]){$('ofGoal').textContent=score[0]>previous[0]?'GOLAZO!':score[1]>previous[1]?'Opponent scores!':'';previous=score.slice()}if(!half&&seconds>=Math.ceil(matchDuration/2)){half=true;$('ofHalf').textContent='Halftime: '+score.join(' – ')+' · '+$('ofStats').textContent}if(!finished&&seconds>=matchDuration&&$('matchStatus').textContent==='FULL TIME'){finished=true;$('ofResult').textContent='FULL TIME · '+homeClub+' '+score.join(' – ')+' '+awayClub+' · '+(score[0]>score[1]?'Victory':score[0]===score[1]?'Draw':'Defeat')}}
+const observer=new MutationObserver(refresh);for(const id of ['clock','score','matchStatus','pauseBtn'])observer.observe($(id),{childList:true,subtree:true,characterData:true});
+$('ofResume').onclick=()=>{if(paused&&seconds<matchDuration)pauseMatch()};$('ofRestart').onclick=()=>resetMatch();$('ofLeave').onclick=()=>{paused=true;show('home')};
+})();
