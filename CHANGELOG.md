@@ -25,3 +25,5 @@
 - Build 2026.11.25.4: compact home tiles, 16–20px dashboard gaps, responsive spacing; no images added. Browser verification pending.
 
 - Build 2026.11.25.5: optional midnight menu theme, five session achievements, goals/conceded/clean sheets/win rate statistics and prototype kit preview. No rewards or images added. Syntax and static ID checks passed; runtime and deployment pending.
+
+- Build 2026.11.25.6: custom cross-league fixture, random match, club rematch, recent five-match form, personal records, session challenges, database counts and searchable move guide. Session only, no rewards. Syntax and static ID checks passed; browser and deployment pending.
