@@ -18,3 +18,18 @@ YouTube alternative: https://www.youtube.com/watch?v=drkkGuzSCvw&list=PLVZVAbDip
 - Build 2026.11.25.6: custom cross-league fixture, random match, club rematch, recent five-match form, personal records, session challenges, database counts and searchable move guide. Session only, no rewards. Syntax and static ID checks passed; browser and deployment pending.
 
 - Build 2026.11.25.7: match-tools.js adds pitch colors, weather overlays, arena styles, scoreboard styles, low effects, fullscreen, accessibility, goal messages, ceremonial coin toss, halftime stats, result summary and pause controls. Syntax checked; browser verification pending. Remaining requested extras: boot color, captain, man of match, penalty shootout, goalkeeper/free-kick/passing training, custom tournaments, league table, international friendlies, flags, countdown and custom keyboard controls. Keep on roadmap until implemented and tested.
+
+## Distinctive game modes — owner requested backlog, 2026-11-25
+Priority and roadmap dates TBD; these are ideas, not completed features. Preserve existing roadmap and economy.
+1. Football Time Machine — recreate historic matches and eras.
+2. Create Your Own Country — custom flag, kits, anthem and national team in World Cup.
+3. Comeback Challenge — start 0–3 down with 15 minutes left.
+4. Referee Mode — officiate matches, review VAR and issue cards.
+5. Street to Superstar — progress from street football to professional clubs.
+6. Friends' World Cup — invite friends to private tournaments, subject to safe multiplayer infrastructure.
+7. Goal Celebration Creator — design signature celebrations.
+8. AI Personal Coach — personalized practice recommendations based on gameplay.
+9. Football Universe — create leagues, clubs and rivalries.
+10. One Player, One Life — single-player career from academy to retirement.
+11. Football Laboratory — separate sandbox with adjustable gravity, pitch and ball physics.
+12. Create Your Own Training Drills — place mannequins, cones and defenders, and challenge friends.
