@@ -5,3 +5,5 @@
 - Added project tracking documents.
 
 - Added home-menu YouTube soundtrack shortcut; external playback, not an integrated soundtrack. Browser smoke test pending.
+
+- Removed old generated eight-note home melody at owner request; retained button sound effects and YouTube shortcut. Browser verification pending.
