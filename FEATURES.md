@@ -15,3 +15,5 @@ Status labels: existing/unverified, starter/unintegrated, planned, verified comp
 See docs/DEVELOPMENT_PLAN.md for all milestones. Mark complete only after testing.
 
 - Home soundtrack shortcut: implemented, runtime unverified. Integrated licensed soundtrack remains planned.
+
+- Broadcast scoreboard, derby labels and day/night pitch toggle: implemented in browser prototype, runtime unverified; not full 3D lighting.
