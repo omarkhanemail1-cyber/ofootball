@@ -193,3 +193,31 @@ const passBeforeFix=pass;
 pass=function(t){throughIntent=!!t;try{passBeforeFix(t);}finally{throughIntent=false;}if(possession==="home")controlGrace=performance.now()+1000;};
 const resetBeforeFix=resetMatch;
 resetMatch=function(){lastControlSide=null;lastControlPlayer=-1;lastAutoSwitch=0;controlGrace=0;resetBeforeFix();};
+
+/* Experimental automatic play; manual input always takes priority. */
+let autoPlaying=false,autoLastInput=performance.now(),autoLastFrame=0,autoActionAt=0,autoIdleEnabled=true;
+try{autoIdleEnabled=localStorage.getItem("ofAutoIdle")!=="off"}catch(e){}
+const autoPanel=document.createElement("div");autoPanel.className="toolbar";
+const autoButton=document.createElement("button");autoButton.type="button";autoButton.textContent="AUTO PLAY: OFF";autoButton.setAttribute("aria-pressed","false");
+const autoLabel=document.createElement("label"),autoCheck=document.createElement("input");autoCheck.type="checkbox";autoCheck.checked=autoIdleEnabled;autoLabel.append(autoCheck," PC idle auto (7 seconds)");autoPanel.append(autoButton,autoLabel);document.getElementById("match").append(autoPanel);
+function setAuto(on){autoPlaying=on;autoButton.textContent="AUTO PLAY: "+(on?"ON":"OFF");autoButton.setAttribute("aria-pressed",String(on));if(!on)autoLastInput=performance.now();}
+autoButton.onclick=()=>setAuto(!autoPlaying);
+autoCheck.onchange=()=>{autoIdleEnabled=autoCheck.checked;try{localStorage.setItem("ofAutoIdle",autoIdleEnabled?"on":"off")}catch(e){}if(!autoIdleEnabled)setAuto(false);};
+function autoManual(){setAuto(false);}
+document.addEventListener("keydown",e=>{if(e.key.toLowerCase() in keys||/^[a-z ]$/i.test(e.key)||e.key==="Shift")autoManual();},true);
+document.getElementById("match").addEventListener("pointerdown",e=>{if(!autoPanel.contains(e.target))autoManual();},true);
+const autoReset=resetMatch;resetMatch=function(){setAuto(false);autoActionAt=0;autoReset();};
+function autoFrame(now){requestAnimationFrame(autoFrame);const dt=Math.min(.04,(now-autoLastFrame)/1000||0);autoLastFrame=now;
+if(!document.getElementById("match").classList.contains("active")||paused||seconds>=matchDuration||players.length!==22||training||document.hidden){autoLastInput=now;return;}
+if(heldMovement.size||heldSprint){autoManual();return;}
+if(!autoPlaying&&autoIdleEnabled&&!matchMedia("(pointer: coarse)").matches&&now-autoLastInput>=7000)setAuto(true);
+if(!autoPlaying||flight)return;
+if(kickoffSide||restartMode){if(possession==="home"&&now>autoActionAt){pass(false);autoActionAt=now+900;}return;}
+let p=players[activePlayer];if(possession==="away"){let best=1;for(let i=2;i<11;i++)if(distanceToBall(players[i])<distanceToBall(players[best]))best=i;if(activePlayer!==best){activePlayer=best;markControlledPlayer();}p=players[activePlayer];const dx=ballPos.x-p.x,dy=ballPos.y-p.y,d=Math.hypot(dx,dy);if(d>2)movePlayer(dx/d*dt*13,dy/d*dt*13);if(d<4&&now>autoActionAt){tackle();autoActionAt=now+650;}return;}
+if(distanceToBall(p)>6){const dx=ballPos.x-p.x,dy=ballPos.y-p.y,d=Math.hypot(dx,dy);movePlayer(dx/d*dt*12,dy/d*dt*12);return;}
+if(p.x>78&&now>autoActionAt){shootExtras();if(flight)stats.shots++;autoActionAt=now+1200;return;}
+const pressure=Math.min(...players.slice(11).map(q=>Math.hypot(q.x-p.x,q.y-p.y)));if(pressure<7&&now>autoActionAt){pass(true);autoActionAt=now+1000;return;}
+movePlayer(dt*11,Math.max(-5,Math.min(5,(50-p.y)*.2))*dt);
+}
+requestAnimationFrame(autoFrame);
+const autoTutorial=document.createElement("p");autoTutorial.textContent="AUTO PLAY: tap AUTO PLAY to let the computer control your team. On PC, optional idle auto starts after 7 seconds. Press a gameplay key or touch match controls to take over.";document.getElementById("tutorial").append(autoTutorial);
