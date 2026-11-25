@@ -81,7 +81,7 @@ for(let i=0;i<22;i++){if((motionUntil.get(i)||0)<now)document.getElementById("p"
 if(restartMode){restartFrame(now,dt);return;}
 if(kickoffSide){if(kickoffSide==="away"&&now>kickoffAt)releaseKickoff();return;}
 if(flight){const f=flight;const ki=f.side==="home"?11:0;chase(ki,f.side==="home"?95:5,Math.max(38,Math.min(62,f.targetY)),dt*2.2);if(Math.abs(players[ki].y-f.targetY)>3)animateMove(ki,"ofDive");f.elapsed+=dt;const t=Math.min(1,f.elapsed/f.duration);moveBall(f.x+((f.side==="home"?98:2)-f.x)*t,f.y+(f.targetY-f.y)*t);if(t===1){flight=null;const keeper=players[f.side==="home"?11:0];if(Math.min(Math.abs(f.targetY-37),Math.abs(f.targetY-63))<1.2){say("Off the post!");rebound(f);return;}if(f.targetY>37&&f.targetY<63&&Math.abs(keeper.y-f.targetY)<2.5){stats.saves++;awardRows[ki].saves++;if(Math.random()<.35){startCorner(f.side,f.targetY);return;}say("Goalkeeper catches the ball!");keeperRestart(f.side);return;}if(f.targetY>37&&f.targetY<63){score[f.side==="home"?0:1]++;const scorer=f.awardShooter;if(Number.isInteger(scorer)&&awardRows[scorer]){awardRows[scorer].goals++;if(f.side==="home"&&awardLastPass&&awardLastPass.to===scorer&&awardLastPass.from!==scorer)awardRows[awardLastPass.from].assists++;}awardLastPass=null;updateScore();say("GOAL! "+(f.side==="home"?homeClub:awayClub));restartAfterGoal(f.side);}else{say("Shot wide — goal kick!");keeperRestart(f.side);}}return;}
-updateControl(now);supportAI(dt);if(possession==="home"){let i=12;for(let j=13;j<22;j++)if(distanceToBall(players[j])<distanceToBall(players[i]))i=j;chase(i,ballPos.x,ballPos.y,dt*.72);if(now>controlGrace&&distanceToBall(players[i])<1.05+.55*opponentQuality()){possession="away";awayCarrier=i;say("The defender wins possession!");}}
+updateControl(now);supportAI(dt);if(possession==="home"){let i=12;for(let j=13;j<22;j++)if(distanceToBall(players[j])<distanceToBall(players[i]))i=j;chase(i,ballPos.x,ballPos.y,dt*.72);if(now>controlGrace&&distanceToBall(players[i])<1.05+.55*opponentQuality()){possession="away";awayCarrier=i;updateControl(now);say("The defender wins possession!");}}
 else{if(awayCarrier<11)awayCarrier=17;const p=players[awayCarrier],space=q=>Math.min(...players.slice(1,11).map(o=>Math.hypot(o.x-q.x,o.y-q.y)));const pressure=space(p);
 if(now>nextAIPass&&p.x>22){let best=-1,value=-Infinity;for(let i=12;i<22;i++){if(i===awayCarrier)continue;const q=players[i],dx=p.x-q.x,d=Math.hypot(q.x-p.x,q.y-p.y);if(d<8||d>40||dx<3||space(q)<4||offsideAt(p,q,"away"))continue;const v=dx*1.3+space(q)-d*.2;if(v>value){value=v;best=i;}}if(best>=0&&(pressure<9||p.x>55)){nextAIPass=now+Math.round(2500-1200*opponentQuality());awardRows[awayCarrier].passes++;awayCarrier=best;moveBall(players[best].x-1,players[best].y);say("Opponent finds an open teammate.");return;}}
 let heading=0,bestSpace=-Infinity;for(const h of [-.65,0,.65]){const q={x:Math.max(5,p.x-8),y:Math.max(8,Math.min(92,p.y+h*8))};const v=space(q)-Math.abs(q.y-50)*.15;if(v>bestSpace){bestSpace=v;heading=h;}}chase(awayCarrier,Math.max(5,p.x-8),Math.max(8,Math.min(92,p.y+heading*8)),dt);moveBall(p.x-1,p.y);
@@ -157,7 +157,7 @@ const setPass=pass;pass=function(t){if(restartMode){if(possession==="home"){dist
 const setMove=movePlayer;movePlayer=function(dx,dy){if(!restartMode){const p=players[activePlayer];if(!kickoffSide&&possession==="home"&&distanceToBall(p)<6&&(p.y+dy<5||p.y+dy>95)){startThrow("away",p.x,p.y<50?3:97);return;}setMove(dx,dy);}};
 const setTackle=tackle;tackle=function(){if(!restartMode)setTackle();};
 const setShoot=shoot;shoot=function(){if(!restartMode)setShoot();};
-const setSwitch=switchNearest;switchNearest=function(){if(!restartMode)setSwitch();};
+const setSwitch=switchNearest;switchNearest=function(){if(!restartMode&&possession==="away")updateControl(performance.now());};
 
 function startThrow(side,x,y){possession=side;let i=side==="home"?8:19;place(i,x,y);moveBall(x,y);if(side==="home")activePlayer=i;else awayCarrier=i;restartMode="throw";restartTime=performance.now()+1800;markControlledPlayer();say(side==="home"?"THROW-IN — press J":"Opponent throw-in");}
 const OFFSIDE_ENABLED=false;
@@ -169,12 +169,10 @@ function randomOpponent(){const pool=(LEAGUES[league]||Object.values(LEAGUES).fl
 function setMatchDuration(value){const n=Number(value);if([180,300,600].includes(n))matchDuration=n;}
 
 let controlGrace=0, lastControlSide=null,lastControlPlayer=-1,lastAutoSwitch=0;
+function closestHomePlayer(){let best=0;for(let i=1;i<11;i++)if(distanceToBall(players[i])<distanceToBall(players[best]))best=i;return best;}
 function updateControl(now){
  if(possession==="home"&&(lastControlSide!=="home"||lastControlPlayer!==activePlayer))controlGrace=now+1000;
- if(possession==="away"&&now-lastAutoSwitch>850&&ballPos.x<55){
- let best=1;for(let i=2;i<11;i++)if(distanceToBall(players[i])<distanceToBall(players[best]))best=i;
- if(activePlayer===0||distanceToBall(players[activePlayer])>distanceToBall(players[best])+3){activePlayer=best;markControlledPlayer();lastAutoSwitch=now;}
- }
+ if(possession==="away"){const best=closestHomePlayer();if(best!==activePlayer&&(lastControlSide!=="away"||distanceToBall(players[best])+.15<distanceToBall(players[activePlayer]))){activePlayer=best;markControlledPlayer();lastAutoSwitch=now;}}
  lastControlSide=possession;lastControlPlayer=activePlayer;
 }
 const supportBeforeFix=supportAI;
@@ -229,7 +227,7 @@ if(heldMovement.size||heldSprint||autoPointers.size){autoManual();return;}
 if(!autoPlaying&&performance.now()-autoLastInput>=7000)setAuto(true);
 if(!autoPlaying||flight)return;
 if(kickoffSide||restartMode){if(possession==="home"&&now>autoActionAt){pass(false);autoActionAt=now+900;}return;}
-let p=players[activePlayer];if(possession==="away"){autoRecent=[];autoCarryUntil=now+900;let best=1;for(let i=2;i<11;i++)if(distanceToBall(players[i])<distanceToBall(players[best]))best=i;if(activePlayer!==best){activePlayer=best;markControlledPlayer();}p=players[activePlayer];const dx=ballPos.x-p.x,dy=ballPos.y-p.y,d=Math.hypot(dx,dy);if(d>2)movePlayer(dx/d*dt*13,dy/d*dt*13);if(d<4&&now>autoActionAt){tackle();autoActionAt=now+650;}return;}
+let p=players[activePlayer];if(possession==="away"){autoRecent=[];autoCarryUntil=now+900;updateControl(now);p=players[activePlayer];const dx=ballPos.x-p.x,dy=ballPos.y-p.y,d=Math.hypot(dx,dy);if(d>2)movePlayer(dx/d*dt*13,dy/d*dt*13);if(d<4&&now>autoActionAt){tackle();autoActionAt=now+650;}return;}
 if(distanceToBall(p)>6){const dx=ballPos.x-p.x,dy=ballPos.y-p.y,d=Math.hypot(dx,dy);movePlayer(dx/d*dt*12,dy/d*dt*12);return;}
 const opponents=players.slice(11),space=q=>Math.min(...opponents.map(o=>Math.hypot(o.x-q.x,o.y-q.y)));
 const pressure=space(p);
