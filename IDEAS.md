@@ -14,3 +14,5 @@ Start music on launch when browser permits (otherwise first interaction), play t
 YouTube alternative: https://www.youtube.com/watch?v=drkkGuzSCvw&list=PLVZVAbDipNFI — home shortcut implemented; embedded playback and automatic repeat not implemented; playlist validity unverified.
 
 - Day 2 build 2026.11.25.3: added global club search, session favourites, completed-match history (50 recent), streaks, in-app notices, quick Barcelona–Real Madrid setup, keyboard guide and roadmap tracker. src/home-extras.js loads after world-cup.js. Syntax and static ID checks passed; browser and deployment verification pending. Session data resets on reload; controller and account support remain planned.
+
+- Build 2026.11.25.6: custom cross-league fixture, random match, club rematch, recent five-match form, personal records, session challenges, database counts and searchable move guide. Session only, no rewards. Syntax and static ID checks passed; browser and deployment pending.
