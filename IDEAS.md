@@ -76,3 +76,7 @@ Combine club strength and selected difficulty independently. Elite opponents sho
 
 ### Birthday setup and annual New Year event
 Replace age selector with birth month, day and year (1950 through actual current calendar year, automatically extending each January). Reject invalid or future dates; keep date local and avoid storing exact birthdate unnecessarily. Preserve device selector. Add a recurring New Year event each January; event rewards and content to be decided by owner.
+
+
+### O-FOOTBALL card packs and store (owner idea)
+Owner proposes card ratings capped at 99, low cards around 70–78, premium tiers around 90–99, Champions League themed packs across participating clubs, pack upgrades using earned coins, and randomized card chances. Owner also proposes real-money credits and rubies, prices to discuss later. Suggested schedule: Day 15 currency foundation, Day 18 earned-coin pack prototypes and transparent odds, Day 21 store prototype. Safety proposal: keep randomized packs earned-only, no paid currency conversion into randomized packs; any future real-money store should offer clearly priced guaranteed items, with age safeguards, parental approval, spending limits, platform/legal review and owner approval before implementation. No prices or economy changes authorized yet.
