@@ -1,0 +1,2 @@
+# O-FOOTBALL contributor instructions
+Read docs/HANDOFF.md, docs/STATUS.md and docs/DEVELOPMENT_PLAN.md first. Preserve existing functionality and user-defined economy. Work on the next incomplete milestone, test changes, update status honestly. Do not mark planned features complete. Keep secrets out of Git. Use original/licensed assets. Keep changes small and reviewable. See docs/architecture.svg for current versus planned stack.
