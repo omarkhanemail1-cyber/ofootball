@@ -81,7 +81,7 @@ for(let i=0;i<22;i++){if((motionUntil.get(i)||0)<now)document.getElementById("p"
 if(restartMode){restartFrame(now,dt);return;}
 if(kickoffSide){if(kickoffSide==="away"&&now>kickoffAt)releaseKickoff();return;}
 if(flight){const f=flight;const ki=f.side==="home"?11:0;chase(ki,f.side==="home"?95:5,Math.max(38,Math.min(62,f.targetY)),dt*2.2);if(Math.abs(players[ki].y-f.targetY)>3)animateMove(ki,"ofDive");f.elapsed+=dt;const t=Math.min(1,f.elapsed/f.duration);moveBall(f.x+((f.side==="home"?98:2)-f.x)*t,f.y+(f.targetY-f.y)*t);if(t===1){flight=null;const keeper=players[f.side==="home"?11:0];if(Math.min(Math.abs(f.targetY-37),Math.abs(f.targetY-63))<1.2){say("Off the post!");rebound(f);return;}if(f.targetY>37&&f.targetY<63&&Math.abs(keeper.y-f.targetY)<2.5){stats.saves++;if(Math.random()<.35){startCorner(f.side,f.targetY);return;}say("Goalkeeper catches the ball!");keeperRestart(f.side);return;}if(f.targetY>37&&f.targetY<63){score[f.side==="home"?0:1]++;updateScore();say("GOAL! "+(f.side==="home"?homeClub:awayClub));restartAfterGoal(f.side);}else{say("Shot wide — goal kick!");keeperRestart(f.side);}}return;}
-supportAI(dt);if(possession==="home"){let i=12;for(let j=13;j<22;j++)if(distanceToBall(players[j])<distanceToBall(players[i]))i=j;chase(i,ballPos.x,ballPos.y,dt);if(distanceToBall(players[i])<2){possession="away";awayCarrier=i;say("The defender wins possession!");}}
+updateControl(now);supportAI(dt);if(possession==="home"){let i=12;for(let j=13;j<22;j++)if(distanceToBall(players[j])<distanceToBall(players[i]))i=j;chase(i,ballPos.x,ballPos.y,dt*.72);if(now>controlGrace&&distanceToBall(players[i])<1.35){possession="away";awayCarrier=i;say("The defender wins possession!");}}
 else{if(awayCarrier<11)awayCarrier=11;const p=players[awayCarrier];if(now>nextSkill&&players.slice(1,11).some(q=>Math.hypot(q.x-p.x,q.y-p.y)<7)){nextSkill=now+2200;skillUntil=now+550;skillDirection=p.y>50?-1:1;animateMove(awayCarrier,"ofFeint");say("Opponent performs a body feint!");}if(now>nextAIPass&&p.x>25){nextAIPass=now+3500;let j=players.findIndex((q,i)=>i>11&&i!==awayCarrier&&q.x<p.x-4&&Math.hypot(q.x-p.x,q.y-p.y)<25);if(j>11){if(offsideAt(p,players[j],"away")){possession="home";activePlayer=6;place(6,players[j].x,players[j].y);moveBall(players[j].x,players[j].y);restartMode="free";say("OFFSIDE — press J for indirect free kick");markControlledPlayer();return;}awayCarrier=j;moveBall(players[j].x-1,players[j].y);say("Opponent passes to a teammate.");return;}}chase(awayCarrier,5,now<skillUntil?p.y+skillDirection*12:50,dt);moveBall(p.x-1,p.y);if(p.x<16){flight={x:ballPos.x,y:ballPos.y,targetY:50+(Math.random()-.5)*40,side:"away",elapsed:0,duration:.35};say("Opponent shoots!");}}
 }
 requestAnimationFrame(gameplayFrame);
@@ -160,3 +160,36 @@ const rulesPass=pass;pass=function(t){if(!restartMode&&!kickoffSide&&!flight&&po
 // Home settings and quick opponent selection; session-only preferences.
 function randomOpponent(){const pool=(LEAGUES[league]||Object.values(LEAGUES).flat()).filter(n=>n!==homeClub);if(!pool.length)return;awayClub=pool[Math.floor(Math.random()*pool.length)];setupKits();}
 function setMatchDuration(value){const n=Number(value);if([180,300,600].includes(n))matchDuration=n;}
+
+let controlGrace=0, lastControlSide=null,lastControlPlayer=-1,lastAutoSwitch=0;
+function updateControl(now){
+ if(possession==="home"&&(lastControlSide!=="home"||lastControlPlayer!==activePlayer))controlGrace=now+1000;
+ if(possession==="away"&&now-lastAutoSwitch>850&&ballPos.x<55){
+ let best=1;for(let i=2;i<11;i++)if(distanceToBall(players[i])<distanceToBall(players[best]))best=i;
+ if(activePlayer===0||distanceToBall(players[activePlayer])>distanceToBall(players[best])+3){activePlayer=best;markControlledPlayer();lastAutoSwitch=now;}
+ }
+ lastControlSide=possession;lastControlPlayer=activePlayer;
+}
+const supportBeforeFix=supportAI;
+supportAI=function(dt){
+ supportBeforeFix(dt);if(training)return;
+ const t=performance.now()/1000;
+ for(let i=1;i<11;i++){if(i===activePlayer)continue;
+ const [x,y]=shape[i];const attacking=possession==="home";
+ const shift=(ballPos.x-50)*.45;
+ const run=attacking&&i>=5?Math.max(0,Math.sin(t*.7+i*1.7))*12:0;
+ chase(i,Math.max(7,Math.min(92,x+shift+run)),Math.max(7,Math.min(93,y+Math.sin(t*.8+i*2)*5)),dt*.65);
+ }
+};
+const nearestBeforeFix=nearestTeammate;
+let throughIntent=false;
+nearestTeammate=function(){
+ const p=players[activePlayer];if(!p)return nearestBeforeFix();
+ let best=-1,cost=Infinity;
+ for(let i=1;i<11;i++){if(i===activePlayer)continue;const q=players[i],dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);const space=Math.min(...players.slice(11).map(o=>Math.hypot(o.x-q.x,o.y-q.y)));const direction=(dx*aim[0]+dy*aim[1])/Math.max(1,d*Math.hypot(...aim));const c=d-12*direction-2*Math.min(space,15)-(throughIntent?dx*.7:0);if(c<cost){cost=c;best=i;}}
+ return best;
+};
+const passBeforeFix=pass;
+pass=function(t){throughIntent=!!t;try{passBeforeFix(t);}finally{throughIntent=false;}if(possession==="home")controlGrace=performance.now()+1000;};
+const resetBeforeFix=resetMatch;
+resetMatch=function(){lastControlSide=null;lastControlPlayer=-1;lastAutoSwitch=0;controlGrace=0;resetBeforeFix();};
