@@ -55,3 +55,10 @@ Mobile/iPad and PC manual AUTO button; optional PC automatic activation after se
 
 ### AUTO PLAY revision — owner feedback Nov 25
 Supersedes manual button, indicator and optional idle setting above: seamless built-in auto after seven seconds idle on PC, iPad and mobile; no separate button, section or toggle. Gameplay key or touch immediately restores manual control; held inputs prevent activation. Preserve existing device selection. Explain in Day 23 slideshow, not current tutorial. Preview revision committed; syntax checked, owner retest and approval pending.
+
+## Team Plan / tactical positioning — owner idea Nov 25
+Selectable tactical styles affect both manual off-ball movement and AUTO PLAY decisions, without forcing the human to follow a rigid script.
+- Tiki-Taka: short intelligent passes, passing triangles, players actively find gaps and open passing lanes, rotate positions and avoid repetitive two-player loops.
+- Attacking: more players push forward, including selected defenders, creating shooting and passing options while retaining minimal defensive cover.
+- Defending: most players drop back, compact coverage and approximately two advanced outlets for counterattacks.
+- Suggested integration Days 5–7 (movement and AI), with squad tactics UI Day 14; allow tactical changes during matches. Planned, not implemented; test balance and preserve existing controls and economy.
