@@ -36,3 +36,13 @@ Priority and roadmap dates TBD; these are ideas, not completed features. Preserv
 
 ## O-Coach chat — owner request Nov 25
 Messenger/Snapchat-style mobile and iPad friendly chat, emoji buttons, conversation history, fictional manager personalities inspired by legendary coaches (real likenesses subject to rights). Consult coach before buying, selling or trading players; owner retains final decision. Coach advises on squad, formations and training. Start with local rule-based prototype; later secure conversational AI, privacy and age-appropriate safeguards. Proposed milestones: Day 17 transfer consultation, Day 26 chat UI, Day 27 safeguards, Day 28 integration. No paid services without approval.
+
+## Owner-approved transfer market concept — November 25, 2026
+Target Day 17 (December 10). Inspired by the owner's three FC Mobile market screenshots, but use original O-FOOTBALL card designs and appropriately licensed player images.
+- Player cards with photos, overall ratings, positions and prices.
+- Recommended, My Players, Watchlist and My Orders tabs.
+- Search, filter and sort by rating, position, league and price.
+- Buy and sell using existing in-game currency; purchase offers, quantities and order status.
+- Market value, lowest/highest prices and price history graphs.
+- O-Coach consultation before buying or selling players.
+- Preserve existing economy rules; no new currency or pricing changes without owner approval. This is an idea, not an implemented feature.
