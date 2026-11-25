@@ -13,3 +13,5 @@ Status labels: existing/unverified, starter/unintegrated, planned, verified comp
 | Cinematic, audio, career, safety and multiplayer | Planned |
 
 See docs/DEVELOPMENT_PLAN.md for all milestones. Mark complete only after testing.
+
+- Home soundtrack shortcut: implemented, runtime unverified. Integrated licensed soundtrack remains planned.
