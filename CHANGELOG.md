@@ -7,3 +7,5 @@
 - Added home-menu YouTube soundtrack shortcut; external playback, not an integrated soundtrack. Browser smoke test pending.
 
 - Removed old generated eight-note home melody at owner request; retained button sound effects and YouTube shortcut. Browser verification pending.
+
+- Added visible build identifier 2026.11.24.1 to the header to help verify Cloudflare deployments. Update identifier on future game releases. Live deployment not verified.
