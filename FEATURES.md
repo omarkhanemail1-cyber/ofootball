@@ -17,3 +17,5 @@ See docs/DEVELOPMENT_PLAN.md for all milestones. Mark complete only after testin
 - Home soundtrack shortcut: implemented, runtime unverified. Integrated licensed soundtrack remains planned.
 
 - Broadcast scoreboard, derby labels and day/night pitch toggle: implemented in browser prototype, runtime unverified; not full 3D lighting.
+
+- Settings centre, random opponent and club match duration: implemented, runtime unverified. Trophy cabinet: placeholder, no award integration yet.
