@@ -33,3 +33,6 @@ Priority and roadmap dates TBD; these are ideas, not completed features. Preserv
 10. One Player, One Life — single-player career from academy to retirement.
 11. Football Laboratory — separate sandbox with adjustable gravity, pitch and ball physics.
 12. Create Your Own Training Drills — place mannequins, cones and defenders, and challenge friends.
+
+## O-Coach chat — owner request Nov 25
+Messenger/Snapchat-style mobile and iPad friendly chat, emoji buttons, conversation history, fictional manager personalities inspired by legendary coaches (real likenesses subject to rights). Consult coach before buying, selling or trading players; owner retains final decision. Coach advises on squad, formations and training. Start with local rule-based prototype; later secure conversational AI, privacy and age-appropriate safeguards. Proposed milestones: Day 17 transfer consultation, Day 26 chat UI, Day 27 safeguards, Day 28 integration. No paid services without approval.
