@@ -24,9 +24,23 @@ body:has(#home.active){background:radial-gradient(ellipse at 40% 35%,#ef4238,#a0
 #home .of-bottom button:focus-visible,#home button:focus-visible,#home summary:focus-visible{outline:3px solid #d5ff45;outline-offset:3px}
 #home summary{cursor:pointer;font-weight:800}#home select{background:#18263d;color:white;padding:8px;border:1px solid #8292ae;border-radius:6px}
 @media(max-width:720px){#home .of-bottom{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}#home .of-feature{padding:20px}#home .of-event{min-height:130px}}
+</style><style id="ofCompactSpacing">
+#home .of-dashboard{gap:20px;min-height:0;grid-template-columns:76px minmax(0,1.15fr) minmax(0,1fr);align-items:stretch}
+#home .of-feature{min-height:300px;padding:24px}
+#home .of-feature h1{font-size:clamp(30px,4vw,56px)}
+#home .of-tiles{gap:16px;grid-template-rows:minmax(150px,1.3fr) minmax(100px,1fr)}
+#home .of-pair{gap:16px;grid-template-columns:repeat(2,minmax(0,1fr))}
+#home .of-side{gap:16px}
+#home .of-tiles button{min-width:0;padding:14px}
+#home .of-tiles strong{font-size:clamp(18px,2.5vw,32px);overflow-wrap:anywhere}
+#home .of-bottom{gap:12px;margin-top:20px}
+#home .grid{gap:16px}
+#home #ofExtras{margin-top:20px!important}
+#home .of-bottom button{border:1px solid #ffffff30;border-radius:8px}
+@media(max-width:720px){#home .of-dashboard{grid-template-columns:minmax(0,1fr);gap:16px}#home .of-feature{min-height:220px}#home .of-tiles{min-height:0;grid-template-rows:140px 100px}#home .of-side{gap:12px}}
 </style></head>
 <body>
-<header><div><div class="logo">O <span>FOOTBALL</span></div><div class="tag">YOUR CLUB. YOUR GAME.</div><div class="tag" id="ofVersion" aria-label="Game version">BUILD 2026.11.25.3 · DAY 2</div></div><div class="of-wallet" aria-label="Currency preview"><span><i class="of-coin">O</i> 0</span><span><i class="of-token">O</i> 0</span><span><i class="of-gem">♦</i> 0</span><small>Wallet preview</small></div><button onclick="show('home')">⌂ HOME</button></header>
+<header><div><div class="logo">O <span>FOOTBALL</span></div><div class="tag">YOUR CLUB. YOUR GAME.</div><div class="tag" id="ofVersion" aria-label="Game version">BUILD 2026.11.25.4 · DAY 2</div></div><div class="of-wallet" aria-label="Currency preview"><span><i class="of-coin">O</i> 0</span><span><i class="of-token">O</i> 0</span><span><i class="of-gem">♦</i> 0</span><small>Wallet preview</small></div><button onclick="show('home')">⌂ HOME</button></header>
 <main>
 <section id="home" class="screen active">
 <div class="home-top"><strong>Matchday hub</strong><span>SEASON ONE · DEVELOPMENT PREVIEW</span></div><div class="of-dashboard"><aside class="of-side"><button onclick="show('tutorial')">▤<small>ACADEMY</small></button><button onclick="show('moves')">★<small>SKILLS</small></button><button onclick="show('leagues')">🏆<small>EVENTS</small></button></aside><article class="of-feature"><div class="of-mark">O</div><div class="of-feature-copy"><small>O-FOOTBALL • SEASON ONE</small><h1>THE GAME<br>IS YOURS.</h1><p>Choose your club. Own the pitch.</p><button onclick="show('leagues')">CHOOSE YOUR CLUB →</button></div></article><div class="of-tiles"><button class="of-event" id="ofCupEntry"><small>INTERNATIONAL COMPETITION</small><strong>WORLD CUP</strong><span aria-hidden="true">🏆</span><small>8-country prototype · Road to glory</small></button><div class="of-pair"><button onclick="show('leagues')"><small>YOUR TEAM</small><strong>CLUB</strong></button><button onclick="show('leagues')"><small>KICK OFF</small><strong>PLAY ⚽</strong></button></div></div></div>
