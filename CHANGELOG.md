@@ -17,3 +17,5 @@
 - Removed visible home soundtrack card at owner's request; Day 24 audio plans unchanged.
 
 - 2026.11.25.1: Day 2 dashboard refresh, World Cup entry, settings/trophy navigation, responsive styling and tournament integration fixes. Browser tests pending.
+
+- Build 2026.11.25.2: restored introduction and button sound controls mount; static navigation checks passed.
