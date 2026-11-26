@@ -27,4 +27,41 @@ else{if(phase==='run'){elapsed+=dt;let dx=+(held.has('d')||held.has('arrowright'
 requestAnimationFrame(frame);
 const pen=$('ofPenaltyShootout');if(pen){for(const n of [...pen.children])if(n.tagName!=='SUMMARY')n.hidden=true;btn(pen,'Play new penalty shootout',()=>open('penalty'))}for(const b of document.querySelectorAll('#home button'))if(/Penalty Shootout/i.test(b.textContent)&&!b.closest('#ofPenaltyShootout'))b.onclick=()=>open('penalty');
 const drill=[...document.querySelectorAll('details')].find(d=>d.firstElementChild?.textContent.includes('Playable skill drills'));if(drill)btn(drill,'Play cone dribbling',()=>open('dribble'));const experimental=[...document.querySelectorAll('details')].find(d=>d.firstElementChild?.textContent.includes('Experimental modes'));if(experimental){const layoutPitch=experimental.querySelector('div[style*="height: 180px"]');btn(experimental,'Play cone layout',()=>{layout=layoutPitch?[...layoutPitch.children].filter(n=>n.textContent==='🔶').map(n=>({x:clamp(parseFloat(n.style.left)*8,100,700),y:clamp(parseFloat(n.style.top)*4.4,45,395)})):[];open('dribble')})}const home=$('home');const nav=make('div',home);nav.className='actions';btn(nav,'⚽ Swipe penalty shootout',()=>open('penalty'));btn(nav,'🔶 Cone dribbling practice',()=>{layout=[];open('dribble')});const oldStart=$('ofDrillStart');if(oldStart){const old=oldStart.onclick;oldStart.onclick=()=>{if($('ofDrill').value==='Penalty')open('penalty');else old()}}
+
+(async()=>{
+try{
+const T=await import('https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js');
+const wrap=make('div',null);wrap.style.cssText='position:relative;width:100%;max-width:800px;aspect-ratio:800/440';canvas.before(wrap);wrap.append(canvas);
+const renderer=new T.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.domElement.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border-radius:12px';wrap.append(renderer.domElement);
+const scene=new T.Scene();scene.background=new T.Color(0x8199b6);const cam=new T.PerspectiveCamera(48,800/440,.1,180);
+scene.add(new T.HemisphereLight(0xffffff,0x405533,2));const sun=new T.DirectionalLight(0xffe8c8,2);sun.position.set(8,20,12);scene.add(sun);
+const mat=c=>new T.MeshStandardMaterial({color:c});const white=mat(0xffffff),blue=mat(0x174caa),gold=mat(0xf3bd32),skin=mat(0xc58e68),dark=mat(0x17243a),orange=mat(0xff982a);
+function mesh(g,m,x,y,z,parent=scene){const o=new T.Mesh(g,m);o.position.set(x,y,z);parent.add(o);return o}
+const box=(w,h,d,m,x,y,z,p)=>mesh(new T.BoxGeometry(w,h,d),m,x,y,z,p);
+for(let i=0;i<10;i++)box(8,.1,44,mat(i%2?0x26723c:0x1b6032),-36+i*8,-.1,0);
+for(const x of [-39,39])box(.12,.03,42,white,x,0,0);for(const z of [-21,21])box(78,.03,.12,white,0,0,z);
+for(const side of [-1,1])for(let i=0;i<5;i++){box(86,.8,2,mat(i%2?0x244b91:0x48576b),0,i*.8,side*(24+i*2));box(2,.8,48,mat(0x48576b),side*(43+i*2),i*.8,0)}
+const goal=new T.Group();scene.add(goal);goal.position.z=-12;
+for(const x of [-3.66,3.66]){box(.12,2.44,.12,white,x,1.22,0,goal);box(.1,.1,1.6,white,x,2.44,-.8,goal)}
+box(7.32,.12,.12,white,0,2.44,0,goal);
+for(let i=0;i<=16;i++)box(.025,2.44,.025,white,-3.66+i*7.32/16,1.22,-1.6,goal);
+for(let i=0;i<=8;i++)box(7.32,.025,.025,white,0,i*2.44/8,-1.6,goal);
+function person3(m){const g=new T.Group();scene.add(g);mesh(new T.CapsuleGeometry(.24,.48,4,8),m,0,1.25,0,g);mesh(new T.SphereGeometry(.19,12,8),skin,0,1.86,0,g);g.userData.legs=[];for(const x of [-.14,.14]){const leg=new T.Group();leg.position.set(x,.85,0);g.add(leg);box(.19,.65,.19,dark,0,-.32,0,leg);box(.2,.13,.32,dark,0,-.7,.06,leg);g.userData.legs.push(leg);const arm=mesh(new T.CapsuleGeometry(.085,.48,4,8),skin,x*2.5,1.23,0,g);arm.rotation.z=x*2}return g}
+const striker=person3(blue),gk=person3(gold),ball=mesh(new T.SphereGeometry(.22,16,12),white,0,.22,0);
+const cones3=new T.Group();scene.add(cones3);let coneKey='',w=0,h=0;
+const aim=mesh(new T.SphereGeometry(.085,8,8),mat(0xffff00),0,1,-12);
+const trace=new T.Group();scene.add(trace);const traceMat=mat(0xffe04d);
+const px=x=>(x-400)/10,pz=y=>(y-220)/10;
+function render3(now){requestAnimationFrame(render3);if(!screen.classList.contains('active'))return;const W=wrap.clientWidth,H=wrap.clientHeight;if(!W||!H)return;if(W!==w||H!==h){w=W;h=H;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
+const penalty=mode==='penalty';goal.visible=gk.visible=penalty;cones3.visible=!penalty;aim.visible=penalty&&(phase==='shoot'||phase==='save');striker.rotation.set(0,0,0);
+if(penalty){cam.position.set(0,4.6,5.8);cam.lookAt(0,1.25,-9);striker.position.set(-.65,0,.8);striker.rotation.y=Math.PI;gk.position.set((keeper-400)/49,0,-11.8);gk.rotation.z=shot?-(keeper-400)/180:0;aim.position.set((aimX-400)/49,clamp((185-aimY)/115*2.44,.05,3),-11.9);
+let t=shot?clamp(shot.t/shot.duration,0,1):0;ball.position.set(shot?((shot.tx-400)*t+Math.sin(Math.PI*t)*shot.bend)/49:0,shot?.22+(clamp((185-shot.ty)/115*2.44,0,4)-.22)*t+Math.sin(Math.PI*t)*.45:.22,-1-11*t);striker.userData.legs[0].rotation.x=shot&&!shot.opponent?Math.sin(Math.min(1,t*5)*Math.PI)*1.1:0;
+}else{const x=px(player.x),z=pz(player.y);striker.position.set(x,0,z);striker.rotation.y=Math.PI/2;const swing=held.size||target?Math.sin(now*.018)*.65:0;striker.userData.legs[0].rotation.x=swing;striker.userData.legs[1].rotation.x=-swing;ball.position.set(x+.5,.22,z+.2);cam.position.set(x-8,8,z+11);cam.lookAt(x+5,0,z);const key=JSON.stringify(cones)+checkpoint;if(key!==coneKey){coneKey=key;for(const o of [...cones3.children]){cones3.remove(o);o.geometry.dispose()}cones.forEach((q,i)=>{mesh(new T.ConeGeometry(.45,.85,12),orange,px(q.x),.425,pz(q.y),cones3);const gate=mesh(new T.RingGeometry(.9,1.05,24),i<checkpoint?blue:gold,px(q.x),.03,pz(q.y+(q.y<220?45:-45)),cones3);gate.rotation.x=-Math.PI/2})}}
+renderer.render(scene,cam)}
+// Keep the original input surface and simulation; map visible goal coordinates back to its logical aiming space.
+const originalPoint=point;point=function(e){if(mode!=='penalty')return originalPoint(e);const r=canvas.getBoundingClientRect(),nx=(e.clientX-r.left)/r.width,ny=(e.clientY-r.top)/r.height;if(phase==='shoot'&&pointer===null&&ny>.58)return {x:400,y:370};return {x:400+(nx-.5)*900,y:70+(ny-.22)*300}};
+renderer.domElement.addEventListener('webglcontextlost',()=>{renderer.domElement.hidden=true;canvas.style.opacity='1'});requestAnimationFrame(render3);
+}catch(e){console.warn('Practice 3D unavailable; retaining classic practice',e)}
+})();
+
 })();
