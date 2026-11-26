@@ -113,3 +113,36 @@ On November 27, implement distinct team-specific home and away kits for every cu
 
 ## Individual football awards — Nov 25 owner addition
 Day 2: begin performance-based Man of the Match prototype and awards tracking. Day 13: integrate Player of the Tournament with completed competitions. Day 25: original Golden Ball ceremony inspired by Ballon d'Or, nominees, rankings and trophy presentation. Day 28: Player of the Year based on season performances and trophies, integrated with career mode. Track goals, assists, defending and saves; avoid random winners. Full ceremony and season integration remain planned; preserve economy and existing milestones.
+
+
+## Owner-approved 30-feature wishlist — Nov 25
+Original milestones, dates, economy and World Cup priority remain unchanged. Balance by effort, not equal feature counts: early days protect core gameplay; complex features begin with design/local prototypes, with secure online functionality deferred until infrastructure, privacy and testing are ready. No pay-to-win, forced ads or unfair matchmaking. Real player likenesses and historical assets require rights. Day 30 tests available work; unfinished items remain backlog, not release promises.
+- Day 3: Stadium builder
+- Day 4: Football academy
+- Day 5: Protect original milestone, integration and testing.
+- Day 6: Street football
+- Day 7: Protect original milestone, integration and testing.
+- Day 8: Protect original milestone, integration and testing.
+- Day 9: Referee career
+- Day 10: Protect original milestone, integration and testing.
+- Day 11: Protect original milestone, integration and testing.
+- Day 12: Custom World Cup
+- Day 13: Golden Boot; Golden Glove
+- Day 14: Historic matches; Player chemistry
+- Day 15: Protect original milestone, integration and testing.
+- Day 16: Player evolution
+- Day 17: Legendary players
+- Day 18: Live seasonal events
+- Day 19: Trophy room
+- Day 20: Custom jerseys; Custom club badges
+- Day 21: Protect original milestone, integration and testing.
+- Day 22: Pitch invasion celebrations
+- Day 23: Spectator mode
+- Day 24: Dynamic crowds; Last-minute drama
+- Day 25: Custom celebrations; Replay editor
+- Day 26: Goal of the Week; Football news center
+- Day 27: Global leaderboards
+- Day 28: Player career; Manager career; Press conferences
+- Day 29: Online Division Rivals; Play with friends; Pro Clubs
+- Day 30: Protect original milestone, integration and testing.
+Days 1–2 retain prior work; Day 30 release testing only. Days 27–29: secure accounts, moderation, opt-in sharing, fair matchmaking and networking prerequisites; no public leaderboards, spectator streaming or community voting until safe infrastructure exists. Day 3 stadium builder is design only; Day 6 street mode is a small-sided physics prototype; Day 28 career modes are initial prototypes; Day 29 online modes are architecture/local tests unless infrastructure is ready.
