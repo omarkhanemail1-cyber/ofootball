@@ -52,3 +52,6 @@ Day 3 Nov 26 preview: day3-stadium-training adds 105:68 pitch rendering, five-ti
 
 
 Nov 26 owner feedback: 20x rendered pitch area in classic view, adjustable 1–10 tracking zoom in WebGL view (area-style zoom, not literal 10x focal length); regulation 105:68 world retained. Day 4: expand club home/away jersey colors and patterns, using original or licensed assets. Preview only; browser testing pending.
+
+
+Nov 26 Day 3 preview: added original WebGL corner flags, 1120 instanced low-poly spectators, benches, tunnel structures and O-FOOTBALL advertising boards. Earlier corner recovery, movement smoothing, 200x classic rendered area and 25% camera range changes remain preview-only. Syntax/source verification only; browser performance and deployment pending.
