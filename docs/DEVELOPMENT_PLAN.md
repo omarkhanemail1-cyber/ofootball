@@ -154,3 +154,6 @@ Day 27 prerequisite for Day 29 multiplayer: server-side pre-delivery filtering o
 
 ## Nov 25 owner playtest feedback — Day 3 (Nov 26)
 Owner reports penalty practice is random button guessing and cone dribbling is not playable. Prioritize fixing both alongside Day 3 stadium foundation: controllable aim/power/direction, goalkeeper saves/dives, playable cone course with movement, collision/checkpoints, timer and completion score. Begin with working gameplay and initial animations; full physics/AI integration remains Days 5–7. Test keyboard and touch; preserve existing modes until replacements work. Owner requested tomorrow, not implementation today. Bonus clubhouse preview remains unmerged and browser/deployment unverified.
+
+
+Nov 25 owner decision: defer birthday selector (DD/YYYY/MM, 1950 through current year, valid dates only, no exact birthday storage) to Day 30 (Dec 23) release testing/integration. Existing implementation is on day2-page-navigation preview, not main; do not merge birthday change early. Preserve existing Day 30 release checks. Navigation preview remains pending separate approval.
