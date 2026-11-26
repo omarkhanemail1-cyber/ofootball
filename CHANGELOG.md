@@ -39,3 +39,6 @@
 
 ## Safe Chat — owner requirement, Nov 25
 Day 27 prerequisite for Day 29 multiplayer: server-side pre-delivery filtering of private/friend chat, blocking email addresses and requests for them, payment card numbers, passwords, verification codes, phone numbers, home/school addresses, requests for private information, suspicious links/scams, threats and bullying. Normalize obfuscated text and test bypass attempts, false positives and multilingual messages. Reject sensitive messages before recipient delivery; sender sees a generic privacy notice, never echo sensitive text. Do not retain raw blocked secrets in logs or moderation records. Provide mute/block/report, age-appropriate defaults, and parental controls. Fail closed if filtering unavailable; keep free-text chat disabled until secure backend and safety tests pass; offer preset football phrases as fallback. Filters cannot guarantee detection of every attempt. Planned, not implemented. Preserve economy and existing milestones.
+
+
+Nov 25: Owner approved bonus clubhouse release; PR #4 merged into main (88431d5105f1997dfeeb9ea1870a960e384f2714). Main index verified loading bonus script. Syntax checked; browser and Cloudflare deployment unverified. Local profiles/statistics, preset nicknames, clubhouse themes, draft feedback; existing countdown preserved. Day 3 training fixes remain pending.
