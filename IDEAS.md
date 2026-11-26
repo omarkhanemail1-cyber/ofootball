@@ -120,3 +120,7 @@ Original milestones, dates, economy and World Cup priority remain unchanged. Bal
 28. Legendary players — Day 17; planned.
 29. Referee career — Day 9; planned.
 30. Custom World Cup — Day 12; planned.
+
+
+## Safe Chat — owner requirement, Nov 25
+Day 27 prerequisite for Day 29 multiplayer: server-side pre-delivery filtering of private/friend chat, blocking email addresses and requests for them, payment card numbers, passwords, verification codes, phone numbers, home/school addresses, requests for private information, suspicious links/scams, threats and bullying. Normalize obfuscated text and test bypass attempts, false positives and multilingual messages. Reject sensitive messages before recipient delivery; sender sees a generic privacy notice, never echo sensitive text. Do not retain raw blocked secrets in logs or moderation records. Provide mute/block/report, age-appropriate defaults, and parental controls. Fail closed if filtering unavailable; keep free-text chat disabled until secure backend and safety tests pass; offer preset football phrases as fallback. Filters cannot guarantee detection of every attempt. Planned, not implemented. Preserve economy and existing milestones.
