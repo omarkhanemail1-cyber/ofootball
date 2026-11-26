@@ -40,3 +40,6 @@ Nov 25: Owner requested compact home navigation and 15 bonus features. Preview b
 
 
 Nov 25: Owner approved NEW ERA home menu; PR #5 merged into main at 336e7977c522dea962a9e8063212d7f0057d090a. Main index verified. Six colorful category buttons from Explore downward, original upper dashboard colors, 15 lightweight prototypes. Browser and Cloudflare deployment unverified. Day 3 training fixes and 3D foundation remain next.
+
+
+Nov 25: Owner approved separate full-width Matchday Extras and Quick Access tiles below Explore. PR #6 merged at 49af8817d33485bbc2b5db2d832c5d5be36b4928; main script verified. Syntax passed; browser and Cloudflare deployment unverified. No gameplay/economy changes.
