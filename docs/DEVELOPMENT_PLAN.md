@@ -157,3 +157,7 @@ Owner reports penalty practice is random button guessing and cone dribbling is n
 
 
 Nov 25 owner decision: defer birthday selector (DD/YYYY/MM, 1950 through current year, valid dates only, no exact birthday storage) to Day 30 (Dec 23) release testing/integration. Existing implementation is on day2-page-navigation preview, not main; do not merge birthday change early. Preserve existing Day 30 release checks. Navigation preview remains pending separate approval.
+
+
+## Day 3 owner clarification — Nov 26
+Keep normal pitch proportions; target five times the previous playable world scale with a zoomed-in tracking camera rather than displaying the whole field. Use varied, purposeful off-ball movement: some players mark opponents, others cover space, support the carrier, make runs or hold formation. Avoid synchronized chasing and aimless random movement. Begin positioning foundation Day 3; deepen tactical AI Days 5–7. Not implemented yet.
