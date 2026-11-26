@@ -104,7 +104,7 @@ const difficultySelect=document.getElementById("ofDifficulty");difficultySelect.
 document.getElementById("ofExitMatch").onclick=()=>{training=false;show("home")};
 document.getElementById("ofTraining").onclick=()=>{resetMatch();training=true;players[activePlayer].x=75;players[activePlayer].y=50;paintPlayer(activePlayer);moveBall(77,50);say("Training: practise shots and passes.");};
 const resetExtras=resetMatch;resetMatch=function(){training=false;Object.keys(stats).forEach(k=>stats[k]=0);chargeStart=0;resetExtras();};
-const moveExtras=movePlayer;movePlayer=function(dx,dy){aim=[dx,dy];moveExtras(dx,dy);};
+const moveExtras=movePlayer;movePlayer=function(dx,dy){if(Math.hypot(dx,dy)>.001&&!mouseAimActive)aim=[dx,dy];moveExtras(dx,dy);};
 nearestTeammate=function(){const p=players[activePlayer];let best=-1,cost=Infinity;players.forEach((q,i)=>{if(q.team!=="home"||i===activePlayer)return;const dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy),dot=(dx*aim[0]+dy*aim[1])/(Math.max(.01,d*Math.hypot(...aim)));const c=d-18*dot;if(c<cost){cost=c;best=i;}});return best;};
 const passExtras=pass;pass=function(t){const before=activePlayer;passExtras(t);if(before!==activePlayer)stats.passes++;};
 const shootExtras=shoot;shoot=function(){if(!chargeStart)chargeStart=performance.now();};
@@ -289,7 +289,7 @@ canvas.addEventListener("pointerdown",e=>{if(!running)return;const r=canvas.getB
 /* Charged distribution and rolling passes */
 let distributionCharge=null;
 const previousPassPhysics=pass;
-pass=function(through=false){if(restartMode||kickoffSide){previousPassPhysics(through);return;}if(flight||possession!=="home"||distanceToBall(players[activePlayer])>6)return;const from=activePlayer,to=nearestTeammate();if(to<0)return;const q=players[to],dx=+(heldMovement.has("d")||heldMovement.has("arrowright"))-+(heldMovement.has("a")||heldMovement.has("arrowleft")),dy=+(heldMovement.has("s")||heldMovement.has("arrowdown"))-+(heldMovement.has("w")||heldMovement.has("arrowup")),len=Math.hypot(dx,dy),tx=len?Math.max(2,Math.min(98,ballPos.x+dx/len*(through?30:18))):Math.min(97,q.x+(through?6:0)),ty=len?Math.max(3,Math.min(97,ballPos.y+dy/len*(through?30:18))):q.y;flight={kind:"pass",side:"home",from,to,x:ballPos.x,y:ballPos.y,tx,ty,elapsed:0,duration:Math.max(.45,Math.hypot(tx-ballPos.x,ty-ballPos.y)/22)};stats.passes++;awardRows[from].passes++;awardLastPass={from,to};say("Rolling pass — chase the ball!");};
+pass=function(through=false){if(restartMode||kickoffSide){previousPassPhysics(through);return;}if(flight||possession!=="home"||distanceToBall(players[activePlayer])>6)return;const from=activePlayer,to=nearestTeammate();if(to<0)return;const q=players[to],dx=aim[0],dy=aim[1],len=Math.hypot(dx,dy)||1,tx=Math.max(2,Math.min(98,ballPos.x+dx/len*(through?30:18))),ty=Math.max(3,Math.min(97,ballPos.y+dy/len*(through?30:18)));flight={kind:"pass",side:"home",from,to,x:ballPos.x,y:ballPos.y,tx,ty,elapsed:0,duration:Math.max(.45,Math.hypot(tx-ballPos.x,ty-ballPos.y)/22)};stats.passes++;awardRows[from].passes++;awardLastPass={from,to};say("Rolling pass — chase the ball!");};
 function chargeDistribution(k){if(!restartMode||possession!=="home"||paused)return false;if(!distributionCharge)distributionCharge={k,start:performance.now()};return true;}
 document.addEventListener("keydown",e=>{const k=actionKey(e);if(!document.getElementById("match").classList.contains("active"))return;if(["q","w","k","j","l"].includes(k)&&chargeDistribution(k)){e.preventDefault();e.stopImmediatePropagation();}},true);
 document.addEventListener("keyup",e=>{if(!distributionCharge||actionKey(e)!==distributionCharge.k)return;const p=Math.min(1,(performance.now()-distributionCharge.start)/1000);distributionCharge=null;if(!restartMode||paused||possession!=="home")return;const from=activePlayer,to=restartMode==="corner"?9:6,q=players[to];restartMode=null;flight={kind:"pass",side:"home",from,to,x:ballPos.x,y:ballPos.y,tx:q.x,ty:q.y,elapsed:0,duration:Math.max(.4,Math.hypot(q.x-ballPos.x,q.y-ballPos.y)/(12+25*p)),arc:p*7};say("Distribution — "+Math.round(p*100)+"% power");},true);
@@ -298,7 +298,7 @@ const powerStyle=document.createElement("style");powerStyle.textContent="#ofPowe
 function chargeVisual(){requestAnimationFrame(chargeVisual);const bar=document.getElementById("ofPower");if(!bar)return;if(distributionCharge)bar.value=Math.min(100,(performance.now()-distributionCharge.start)/10);bar.style.setProperty("--kick-color",bar.value<35?"#32d65d":bar.value<76?"#f4ce38":"#f34b4b");}requestAnimationFrame(chargeVisual);
 
 /* Directional striking preview: O charges a finesse shot. */
-let finesseStart=0;
+let finesseStart=0,mouseAimActive=false;
 function strikeDirectional(power,curve=false){
  if(paused||flight||kickoffSide||restartMode||possession!=="home"||!players[activePlayer]||distanceToBall(players[activePlayer])>6)return;
  const p=players[activePlayer],n=Math.hypot(...aim)||1,dx=aim[0]/n,dy=aim[1]/n;
@@ -322,3 +322,6 @@ requestAnimationFrame(liveHints);
 
 // Power marker follows the active player during charging.
 const kickMarker=document.createElement("div");kickMarker.style.cssText="position:fixed;z-index:9999;pointer-events:none;width:100px;height:9px;background:linear-gradient(90deg,#32d65d,#f4ce38,#f34b4b);border:1px solid white;border-radius:4px;display:none";const kickArrow=document.createElement("span");kickArrow.style.cssText="position:absolute;top:-9px;transform:translateX(-50%);color:white;font-size:12px";kickArrow.textContent="▼";kickMarker.append(kickArrow);document.body.append(kickMarker);function markerFrame(){requestAnimationFrame(markerFrame);const start=finesseStart||chargeStart||distributionCharge?.start;const p=document.getElementById("p"+activePlayer);if(!start||!p||paused||!document.getElementById("match").classList.contains("active")){kickMarker.style.display="none";return;}const r=p.getBoundingClientRect();kickMarker.style.display="block";kickMarker.style.left=(r.left+r.width/2-50)+"px";kickMarker.style.top=(r.top-24)+"px";kickArrow.style.left=Math.min(100,(performance.now()-start)/9)+"%";}requestAnimationFrame(markerFrame);
+
+// Mouse direction is measured relative to the visible controlled player.
+document.getElementById("match").addEventListener("pointermove",e=>{if(e.pointerType!=="mouse"||paused)return;const p=document.getElementById("p"+activePlayer);if(!p)return;const r=p.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2;if(Math.hypot(dx,dy)>8){mouseAimActive=true;aim=[dx,dy];}});document.addEventListener("keydown",e=>{if(keys[e.key.toLowerCase()])mouseAimActive=false;},true);window.addEventListener("blur",()=>{mouseAimActive=false;chargeStart=0;});
