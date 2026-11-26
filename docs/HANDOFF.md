@@ -27,3 +27,7 @@ Day 2: index.html owns the dashboard and ofCupEntry; src/world-cup.js binds that
 - Builds .8–.9: international friendly setup, flags, captain and boot styling, session standings, direction guessing drills, tournament draw, team award, timed kickoff and configurable movement letters. Individual awards, playable custom tournaments, realistic drills, full action remapping and browser testing remain pending.
 
 - Nov 25: Owner approved 30-feature wishlist and phased roadmap additions in IDEAS.md and docs/DEVELOPMENT_PLAN.md. Original milestones and economy preserved; no new gameplay implementation. Mobile overlay merged into main (9c9b23f2fabe95a87cceeecedbde84c2b6536f30); deployment unverified.
+
+
+## Nov 25 owner playtest feedback — Day 3 (Nov 26)
+Owner reports penalty practice is random button guessing and cone dribbling is not playable. Prioritize fixing both alongside Day 3 stadium foundation: controllable aim/power/direction, goalkeeper saves/dives, playable cone course with movement, collision/checkpoints, timer and completion score. Begin with working gameplay and initial animations; full physics/AI integration remains Days 5–7. Test keyboard and touch; preserve existing modes until replacements work. Owner requested tomorrow, not implementation today. Bonus clubhouse preview remains unmerged and browser/deployment unverified.
