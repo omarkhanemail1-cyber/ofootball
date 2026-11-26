@@ -20,3 +20,5 @@ Day 2 static checks passed: unique IDs, screen targets, World Cup binding, durat
 
 ## End of Day 2 — 2026-11-25
 Owner ended development for today. Approved gameplay preview merged to main; live deployment not independently verified. Birthday setup remains on day2-age-selector preview, pending approval/merge. Big Five fusion and seasonal card proposals saved in IDEAS.md. Resume Day 3 on Nov 26: inspect latest main and preview, prioritize 3D stadium, pitch scale, lighting, tracking camera and initial animations; preserve existing gameplay. No background development. Day 3 completion depends on testing.
+
+Day 2 reopened at owner request: mobile pitch overlay committed on day2-mobile-controls; syntax and remote verification passed, phone testing and live merge pending. Day 3 remains 3D stadium/camera.
