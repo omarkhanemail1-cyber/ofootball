@@ -128,3 +128,6 @@ Day 27 prerequisite for Day 29 multiplayer: server-side pre-delivery filtering o
 
 ## Nov 25 owner playtest feedback — Day 3 (Nov 26)
 Owner reports penalty practice is random button guessing and cone dribbling is not playable. Prioritize fixing both alongside Day 3 stadium foundation: controllable aim/power/direction, goalkeeper saves/dives, playable cone course with movement, collision/checkpoints, timer and completion score. Begin with working gameplay and initial animations; full physics/AI integration remains Days 5–7. Test keyboard and touch; preserve existing modes until replacements work. Owner requested tomorrow, not implementation today. Bonus clubhouse preview remains unmerged and browser/deployment unverified.
+
+
+Nov 25: Owner requested compact home navigation and 15 bonus features. Preview branch day2-clean-hub adds six mutually exclusive category panels, moves existing details without deleting them, and adds difficulty recommendation, derbies, predictions, IQ question, text tunnel preview, virtual ticket, prototype club comparison, manager profile, formation board, match report, goals, random challenge, daily club, Hall of Fame and sample trophy certificate. Syntax and remote writes verified; browser/deployment unverified; not merged. No pitch/controls/economy changes. Day 3 training fixes remain priority.
