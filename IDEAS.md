@@ -131,3 +131,7 @@ Owner reports penalty practice is random button guessing and cone dribbling is n
 
 
 Nov 25: Owner requested compact home navigation and 15 bonus features. Preview branch day2-clean-hub adds six mutually exclusive category panels, moves existing details without deleting them, and adds difficulty recommendation, derbies, predictions, IQ question, text tunnel preview, virtual ticket, prototype club comparison, manager profile, formation board, match report, goals, random challenge, daily club, Hall of Fame and sample trophy certificate. Syntax and remote writes verified; browser/deployment unverified; not merged. No pitch/controls/economy changes. Day 3 training fixes remain priority.
+
+
+## Day 3 owner clarification — Nov 26
+Keep normal pitch proportions; target five times the previous playable world scale with a zoomed-in tracking camera rather than displaying the whole field. Use varied, purposeful off-ball movement: some players mark opponents, others cover space, support the carrier, make runs or hold formation. Avoid synchronized chasing and aimless random movement. Begin positioning foundation Day 3; deepen tactical AI Days 5–7. Not implemented yet.
