@@ -86,3 +86,37 @@ Days 18–19: collect distinct Barcelona, Real Madrid, Manchester City, Arsenal 
 
 ## Mobile pitch controls — owner feedback, Nov 25 evening
 Day 3 priority: move phone/iPad touch controls onto the pitch as an overlay, inspired by owner's screenshot: translucent circular joystick bottom left, PASS, THROUGH, SHOOT and SPRINT & SKILL circular buttons bottom right, radar bottom center. Responsive landscape layout, preserve keyboard controls and immediate manual takeover from Auto Play. Use original UI styling closely matching the reference layout. Test on mobile preview before release. Recorded after Day 2 wrap-up; implementation deferred to Day 3.
+
+
+## Owner-approved 30-feature wishlist — Nov 25
+Original milestones, dates, economy and World Cup priority remain unchanged. Balance by effort, not equal feature counts: early days protect core gameplay; complex features begin with design/local prototypes, with secure online functionality deferred until infrastructure, privacy and testing are ready. No pay-to-win, forced ads or unfair matchmaking. Real player likenesses and historical assets require rights. Day 30 tests available work; unfinished items remain backlog, not release promises.
+1. Online Division Rivals — Day 29; planned.
+2. Play with friends — Day 29; planned.
+3. Player career — Day 28; planned.
+4. Manager career — Day 28; planned.
+5. Street football — Day 6; planned.
+6. Pro Clubs — Day 29; planned.
+7. Player evolution — Day 16; planned.
+8. Football academy — Day 4; planned.
+9. Live seasonal events — Day 18; planned.
+10. Historic matches — Day 14; planned.
+11. Custom celebrations — Day 25; planned.
+12. Stadium builder — Day 3; planned.
+13. Custom jerseys — Day 20; planned.
+14. Custom club badges — Day 20; planned.
+15. Global leaderboards — Day 27; planned.
+16. Spectator mode — Day 23; planned.
+17. Replay editor — Day 25; planned.
+18. Goal of the Week — Day 26; planned.
+19. Golden Boot — Day 13; planned.
+20. Golden Glove — Day 13; planned.
+21. Trophy room — Day 19; planned.
+22. Football news center — Day 26; planned.
+23. Press conferences — Day 28; planned.
+24. Player chemistry — Day 14; planned.
+25. Dynamic crowds — Day 24; planned.
+26. Pitch invasion celebrations — Day 22; planned.
+27. Last-minute drama — Day 24; planned.
+28. Legendary players — Day 17; planned.
+29. Referee career — Day 9; planned.
+30. Custom World Cup — Day 12; planned.
