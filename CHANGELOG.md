@@ -51,3 +51,6 @@ Nov 25: Owner approved NEW ERA home menu; PR #5 merged into main at 336e7977c522
 
 
 Nov 25: Owner approved separate full-width Matchday Extras and Quick Access tiles below Explore. PR #6 merged at 49af8817d33485bbc2b5db2d832c5d5be36b4928; main script verified. Syntax passed; browser and Cloudflare deployment unverified. No gameplay/economy changes.
+
+
+Nov 25 owner decision: defer birthday selector (DD/YYYY/MM, 1950 through current year, valid dates only, no exact birthday storage) to Day 30 (Dec 23) release testing/integration. Existing implementation is on day2-page-navigation preview, not main; do not merge birthday change early. Preserve existing Day 30 release checks. Navigation preview remains pending separate approval.
