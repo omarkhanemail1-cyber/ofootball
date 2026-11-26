@@ -57,3 +57,6 @@ Nov 25 owner decision: defer birthday selector (DD/YYYY/MM, 1950 through current
 
 
 Day 3 Nov 26 preview: day3-stadium-training adds 105:68 pitch rendering, five-times visible world area zoom (sqrt(5) linear scale), ball-follow camera, shaded DOM players and stadium surround, varied marking/support, separate swipe/keyboard penalty shootout and playable cone course with custom cone layouts, checkpoints, collision count and timer. Syntax and remote source verified; browser, touch, deployment and gameplay acceptance not tested. This is 2.5D, not true 3D; world physics remain normalized, full 3D and animation work outstanding. No merge to main. Birthday remains Day 30; navigation preview separate.
+
+
+Nov 26 Day 3 preview: added original WebGL corner flags, 1120 instanced low-poly spectators, benches, tunnel structures and O-FOOTBALL advertising boards. Earlier corner recovery, movement smoothing, 200x classic rendered area and 25% camera range changes remain preview-only. Syntax/source verification only; browser performance and deployment pending.
