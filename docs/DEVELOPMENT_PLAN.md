@@ -164,3 +164,6 @@ Keep normal pitch proportions; target five times the previous playable world sca
 
 
 Day 3 Nov 26 preview: day3-stadium-training adds 105:68 pitch rendering, five-times visible world area zoom (sqrt(5) linear scale), ball-follow camera, shaded DOM players and stadium surround, varied marking/support, separate swipe/keyboard penalty shootout and playable cone course with custom cone layouts, checkpoints, collision count and timer. Syntax and remote source verified; browser, touch, deployment and gameplay acceptance not tested. This is 2.5D, not true 3D; world physics remain normalized, full 3D and animation work outstanding. No merge to main. Birthday remains Day 30; navigation preview separate.
+
+
+Nov 26 owner feedback: 20x rendered pitch area in classic view, adjustable 1–10 tracking zoom in WebGL view (area-style zoom, not literal 10x focal length); regulation 105:68 world retained. Day 4: expand club home/away jersey colors and patterns, using original or licensed assets. Preview only; browser testing pending.
