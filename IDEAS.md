@@ -135,3 +135,6 @@ Nov 25: Owner requested compact home navigation and 15 bonus features. Preview b
 
 ## Day 3 owner clarification — Nov 26
 Keep normal pitch proportions; target five times the previous playable world scale with a zoomed-in tracking camera rather than displaying the whole field. Use varied, purposeful off-ball movement: some players mark opponents, others cover space, support the carrier, make runs or hold formation. Avoid synchronized chasing and aimless random movement. Begin positioning foundation Day 3; deepen tactical AI Days 5–7. Not implemented yet.
+
+
+Nov 26 owner feedback: 20x rendered pitch area in classic view, adjustable 1–10 tracking zoom in WebGL view (area-style zoom, not literal 10x focal length); regulation 105:68 world retained. Day 4: expand club home/away jersey colors and patterns, using original or licensed assets. Preview only; browser testing pending.
