@@ -25,3 +25,6 @@ Day 2 reopened at owner request: mobile pitch overlay committed on day2-mobile-c
 
 
 Nov 25: Owner approved bonus clubhouse release; PR #4 merged into main (88431d5105f1997dfeeb9ea1870a960e384f2714). Main index verified loading bonus script. Syntax checked; browser and Cloudflare deployment unverified. Local profiles/statistics, preset nicknames, clubhouse themes, draft feedback; existing countdown preserved. Day 3 training fixes remain pending.
+
+
+Nov 25: Owner approved NEW ERA home menu; PR #5 merged into main at 336e7977c522dea962a9e8063212d7f0057d090a. Main index verified. Six colorful category buttons from Explore downward, original upper dashboard colors, 15 lightweight prototypes. Browser and Cloudflare deployment unverified. Day 3 training fixes and 3D foundation remain next.
