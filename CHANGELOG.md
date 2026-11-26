@@ -35,3 +35,7 @@
 - Nov 25 evening preview: mobile controls moved inside pitch, circular translucent joystick and four action buttons, centered radar; desktop controls preserved. Preview only, phone testing pending.
 
 - Nov 25: Owner approved 30-feature wishlist and phased roadmap additions in IDEAS.md and docs/DEVELOPMENT_PLAN.md. Original milestones and economy preserved; no new gameplay implementation. Mobile overlay merged into main (9c9b23f2fabe95a87cceeecedbde84c2b6536f30); deployment unverified.
+
+
+## Safe Chat — owner requirement, Nov 25
+Day 27 prerequisite for Day 29 multiplayer: server-side pre-delivery filtering of private/friend chat, blocking email addresses and requests for them, payment card numbers, passwords, verification codes, phone numbers, home/school addresses, requests for private information, suspicious links/scams, threats and bullying. Normalize obfuscated text and test bypass attempts, false positives and multilingual messages. Reject sensitive messages before recipient delivery; sender sees a generic privacy notice, never echo sensitive text. Do not retain raw blocked secrets in logs or moderation records. Provide mute/block/report, age-appropriate defaults, and parental controls. Fail closed if filtering unavailable; keep free-text chat disabled until secure backend and safety tests pass; offer preset football phrases as fallback. Filters cannot guarantee detection of every attempt. Planned, not implemented. Preserve economy and existing milestones.
