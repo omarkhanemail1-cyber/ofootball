@@ -211,7 +211,7 @@ let autoRecent=[],autoCarryUntil=0;
 nearestTeammate=function(){
  const p=players[activePlayer];if(!p)return nearestBeforeFix();if(autoPassTarget>0&&autoPassTarget!==activePlayer)return autoPassTarget;
  let best=-1,cost=Infinity;
- for(let i=1;i<11;i++){if(i===activePlayer)continue;const q=players[i],dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);const space=Math.min(...players.slice(11).map(o=>Math.hypot(o.x-q.x,o.y-q.y)));const direction=(dx*aim[0]+dy*aim[1])/Math.max(1,d*Math.hypot(...aim));const c=d-12*direction-2*Math.min(space,15)-(throughIntent?dx*.7:0);if(c<cost){cost=c;best=i;}}
+ for(let i=0;i<11;i++){if(i===activePlayer)continue;const q=players[i],dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);const space=Math.min(...players.slice(11).map(o=>Math.hypot(o.x-q.x,o.y-q.y)));const direction=(dx*aim[0]+dy*aim[1])/Math.max(1,d*Math.hypot(...aim));const c=d-12*direction-2*Math.min(space,15)-(throughIntent?dx*.7:0);if(c<cost){cost=c;best=i;}}
  return best;
 };
 const passBeforeFix=pass;
@@ -357,3 +357,7 @@ renderLineup=function(){fixLineup();const captain=document.getElementById("ofCap
 const fixSetKit=setKit;setKit=function(side,kit){fixSetKit(side,kit);if(side==="home")renderLineup();};
 const fixSupport=supportAI;supportAI=function(dt){if(training||possession!=="home"){fixSupport(dt);return;}const p=players[activePlayer];if(!p)return;for(let i=1;i<11;i++){if(i===activePlayer)continue;const q=players[i],lane=shape[i][1];let best=null,score=-Infinity;for(const dx of (i>=5?[10,20,30,-8]:[-18,-8,8]))for(const dy of [-15,0,15]){const x=Math.max(5,Math.min(94,p.x+dx)),y=Math.max(7,Math.min(93,lane+dy));const clearance=Math.min(...players.slice(11).map(o=>Math.hypot(o.x-x,o.y-y)));const spacing=Math.min(...players.slice(0,11).filter(o=>o!==q).map(o=>Math.hypot(o.x-x,o.y-y)));const value=clearance*1.6+Math.min(18,spacing)-Math.hypot(q.x-x,q.y-y)*.3-Math.abs(y-lane)*.25;if(value>score){score=value;best=[x,y];}}if(best)chase(i,best[0],best[1],dt*.95);}};
 renderLineup();
+
+// Keeper can leave a restart to dribble; normal backpasses stay at feet.
+const keeperMoveFix=movePlayer;movePlayer=function(dx,dy){if(restartMode==="keeper"&&possession==="home"&&activePlayer===0){restartMode=null;moveBall(players[0].x,players[0].y);}keeperMoveFix(dx,dy);};
+const keeperPassFix=distributeRestart;distributeRestart=function(){if(restartMode==="keeper"&&possession==="home"){restartMode=null;const p=players[0],q=players[9];flight={kind:"pass",side:"home",from:0,to:9,x:p.x,y:p.y,tx:Math.min(92,q.x+12),ty:q.y,elapsed:0,duration:1.8,arc:4,power:85};say("Keeper sends a long ball forward.");return;}keeperPassFix();};
