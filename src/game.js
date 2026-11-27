@@ -384,3 +384,7 @@ const tacticalSupport=supportAI;supportAI=function(dt){if(training)return;const 
 
 // Prevent browser scrolling while manipulating match touch controls.
 const matchTouchStyle=document.createElement("style");matchTouchStyle.textContent="#match.active canvas,#match.active button,#match.active [class*=joystick]{touch-action:none;overscroll-behavior:contain}";document.head.append(matchTouchStyle);
+
+// 2026 World Cup registered squad numbers (FIFA / DFB).
+ofRosterRaw.Brazil="GK ALISSON|MF EDERSON SILVA|DF GABRIEL|DF MARQUINHOS|MF CASEMIRO|DF ALEX SANDRO|FW VINI JR.|MF BRUNO GUIMARÃES|FW MATHEUS CUNHA|FW NEYMAR|FW RAPHINHA|GK WEVERTON|DF DANILO|DF BREMER|DF LEO PEREIRA|DF DOUGLAS SANTOS|MF FABINHO|MF DANILO SANTOS|FW ENDRICK|MF LUCAS PAQUETÁ|FW LUIZ HENRIQUE|FW MARTINELLI|GK EDERSON|DF IBAÑEZ|FW IGOR THIAGO|FW RAYAN";
+ofRosterRaw.Spain="GK DAVID RAYA|DF MARC PUBILL|DF GRIMALDO|DF ERIC GARCÍA|DF MARCOS LLORENTE|MF MIKEL MERINO|FW FERRAN TORRES|MF FABIÁN RUIZ|MF GAVI|FW DANI OLMO|FW YEREMY PINO|DF PEDRO PORRO|GK JOAN GARCÍA|DF LAPORTE|MF ÁLEX BAENA|MF RODRI|FW NICO WILLIAMS|MF ZUBIMENDI|FW LAMINE YAMAL|MF PEDRI|FW OYARZABAL|DF PAU CUBARSÍ|GK UNAI SIMÓN|DF CUCURELLA|FW VÍCTOR MUÑOZ|FW BORJA IGLESIAS";
