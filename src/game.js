@@ -477,3 +477,12 @@ const nationalStyle=document.createElement("style");nationalStyle.textContent=".
 const finalScoreOverlay=document.createElement("div");finalScoreOverlay.hidden=true;finalScoreOverlay.style.cssText="position:fixed;inset:0;z-index:100000;background:rgba(5,12,25,.88);align-items:center;justify-content:center;color:white;text-align:center;padding:20px";const finalScoreCard=document.createElement("div");finalScoreCard.style.cssText="background:#101e32;border:1px solid #52647b;border-radius:20px;padding:32px;width:min(520px,90vw)";finalScoreOverlay.append(finalScoreCard);document.body.append(finalScoreOverlay);
 const finalScoreTick=tick;tick=function(){finalScoreTick();if(seconds<matchDuration||!finalScoreOverlay.hidden||training)return;finalScoreCard.replaceChildren();for(const [tag,value,size] of [["div","OSN · O-FOOTBALL SPORTS NETWORK","18px"],["h2","GAME OVER · FULL TIME","28px"],["p",homeClub+"  vs  "+awayClub,"20px"],["div",score[0]+" – "+score[1],"64px"],["p",score[0]>score[1]?"YOU WIN":score[0]<score[1]?"DEFEAT":"DRAW","24px"]]){const e=document.createElement(tag);e.textContent=value;e.style.cssText="font-weight:800;font-size:"+size+";margin:12px 0";finalScoreCard.append(e);}const close=document.createElement("button");close.textContent="Continue to match summary";close.onclick=()=>{finalScoreOverlay.hidden=true;finalScoreOverlay.style.display="none";};finalScoreCard.append(close);finalScoreOverlay.hidden=false;finalScoreOverlay.style.display="flex";};
 const finalScoreReset=resetMatch;resetMatch=function(){finalScoreOverlay.hidden=true;finalScoreOverlay.style.display="none";return finalScoreReset();};
+
+/* Batch Two: set-piece spacing and goalkeeper distribution controls. */
+const batchTwoRestart=restartFrame;
+restartFrame=function(now,dt){
+ if(restartMode==="keeper"&&possession==="home"){const p=players[0];if(p){moveBall(p.x+.55,p.y);}}
+ batchTwoRestart(now,dt);
+};
+const batchTwoSupport=supportAI;
+supportAI=function(dt){batchTwoSupport(dt);if(training||paused||restartMode||flight||possession!=="away"||ballPos.x>27)return;const defenders=players.slice(1,11).map((p,j)=>({i:j+1,d:distanceToBall(p)})).filter(o=>o.i!==activePlayer).sort((a,b)=>a.d-b.d).slice(0,2);defenders.forEach((o,j)=>chase(o.i,Math.max(5,ballPos.x-2),Math.max(5,Math.min(95,ballPos.y+(j?4:-4))),dt*.65));};
