@@ -76,7 +76,7 @@ shoot=function(){const p=players[activePlayer];if(flight||possession!=="home"||d
 function restartAfterGoal(side){const i=side==="home"?20:9;players[i].x=side==="home"?52:48;players[i].y=50;paintPlayer(i);possession=side==="home"?"away":"home";awayCarrier=side==="home"?i:-1;if(side==="away")activePlayer=i;moveBall(50,50);markControlledPlayer();}
 tackle=function(){const p=players[activePlayer];if(!flight&&possession==="away"&&distanceToBall(p)<5){possession="home";awayCarrier=-1;moveBall(p.x+2,p.y);say("Clean tackle!");}else say("Close down the ball carrier first.");};
 function chase(i,x,y,dt){const p=players[i],dx=x-p.x,dy=y-p.y,d=Math.hypot(dx,dy);if(d<.8)return;const step=Math.min(d,dt*13*p.pace/84*(i>=11?difficultyFactor():1));p.x+=dx/d*step;p.y+=dy/d*step;paintPlayer(i);}
-function gameplayFrame(now){requestAnimationFrame(gameplayFrame);const dt=Math.min(.05,(now-lastFrame)/1000||0);lastFrame=now;if(!document.getElementById("match").classList.contains("active")||paused||seconds>=matchDuration||players.length!==22)return;
+function gameplayFrame(now){requestAnimationFrame(gameplayFrame);const dt=Math.min(flight && flight.kind!=="pass" ? .15 : .05,(now-lastFrame)/1000||0);lastFrame=now;if(!document.getElementById("match").classList.contains("active")||paused||seconds>=matchDuration||players.length!==22)return;
 for(let i=0;i<22;i++){if((motionUntil.get(i)||0)<now)document.getElementById("p"+i)?.classList.add("still");}
 if(restartMode){restartFrame(now,dt);return;}
 if(kickoffSide){if(kickoffSide==="away"&&now>kickoffAt)releaseKickoff();return;}
@@ -461,3 +461,6 @@ const nationalStyle=document.createElement("style");nationalStyle.textContent=".
 
  const pressureSupport=supportAI;supportAI=function(dt){pressureSupport(dt);if(training||paused||restartMode||flight||possession!=="home"||ballPos.x<73)return;const defenders=players.map((p,i)=>({p,i,d:Math.hypot(p.x-ballPos.x,p.y-ballPos.y)})).filter(o=>o.i>=12).sort((a,b)=>a.d-b.d).slice(0,3);defenders.forEach((o,j)=>{const y=Math.max(5,Math.min(95,ballPos.y+(j===1?-3:j===2?3:0)));chase(o.i,Math.min(96,ballPos.x+(j?2:0)),y,dt*(j?.85:1.1));});};
  const closeRangeStrike=strikeDirectional;strikeDirectional=function(power,curve){const result=closeRangeStrike(power,curve);if(flight&&flight.side==="home"&&flight.kind!=="pass"&&ballPos.x>72){flight.targetY=Math.max(40,Math.min(60,flight.targetY));flight.height=Math.min(1.8,flight.height||0);flight.duration=Math.min(flight.duration,.45);}return result;};
+
+ // Movement input must never drag an in-flight shot back to the shooter.
+ const flightSafeMove=movePlayer;movePlayer=function(dx,dy){if(!flight)return flightSafeMove(dx,dy);const saved=ballPos;try{return flightSafeMove(dx,dy);}finally{if(ballPos!==saved)moveBall(saved.x,saved.y);}};
