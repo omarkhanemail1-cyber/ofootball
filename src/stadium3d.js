@@ -13,6 +13,11 @@ box(125,.4,88,concrete,0,-.35,0);for(let i=0;i<10;i++)box(10.5,.08,68,grass[i%2]
 function mark(x,z,w,d){box(w,.018,d,white,x,.06,z)}
 mark(0,-34,105,.13);mark(0,34,105,.13);mark(-52.5,0,.13,68);mark(52.5,0,.13,68);mark(0,0,.13,68);
 const ring=mesh(new T.RingGeometry(9.05,9.18,64),white,0,.07,0);ring.rotation.x=-Math.PI/2;
+ // Regulation penalty arcs: 9.15 m from each penalty mark, outside the box.
+ for(const sign of [-1,1]){const angle=Math.acos(5.5/9.15);const center=sign*41.5;const start=sign===1?Math.PI-angle:-angle;const arc=mesh(new T.RingGeometry(9.09,9.21,48,1,start,2*angle),white,center,.075,0);arc.rotation.x=-Math.PI/2;const spot=mesh(new T.CircleGeometry(.11,20),white,center,.075,0);spot.rotation.x=-Math.PI/2;}
+ // Broadcast camera rigs behind both goals and along touchlines.
+ for(const [x,z] of [[-57,-10],[-57,10],[57,-10],[57,10],[-30,-38],[30,-38],[-30,38],[30,38]]){const rig=new T.Group();scene.add(rig);rig.position.set(x,0,z);rig.rotation.y=Math.atan2(-x,-z);for(const a of [0,2.094,4.189]){const leg=box(.09,1.5,.09,dark,Math.sin(a)*.32,.7,Math.cos(a)*.32,rig);leg.rotation.z=Math.sin(a)*.35;}box(.65,.42,.85,dark,0,1.55,0,rig);const lens=mesh(new T.CylinderGeometry(.19,.22,.35,12),dark,0,1.55,.57,rig);lens.rotation.x=Math.PI/2;box(.15,.12,.16,mat(0xff3333),0,1.82,0,rig);}
+
 for(const sign of [-1,1]){for(const [depth,width] of [[16.5,40.32],[5.5,18.32]]){mark(sign*(52.5-depth/2),width/2,depth,.13);mark(sign*(52.5-depth/2),-width/2,depth,.13);mark(sign*(52.5-depth),0,.13,width)}const gx=sign*52.5;for(const z of [-3.66,3.66]){box(.12,2.44,.12,white,gx,1.22,z);box(1.8,.08,.08,white,gx+sign*.9,2.44,z)}box(.12,.12,7.32,white,gx,2.44,0);for(let j=0;j<=12;j++)box(.025,2.44,.025,white,gx+sign*1.8,1.22,-3.66+j*.61);for(let j=0;j<=5;j++)box(.025,.025,7.32,white,gx+sign*1.8,j*.488,0)}
 for(const sign of [-1,1])for(let row=0;row<7;row++){box(122,1.1,2.4,row%2?seat:concrete,0,.55+row*.95,sign*(40+row*2.4));box(2.4,1.1,78,row%2?seat:concrete,sign*(59+row*2.4),.55+row*.95,0)}
 // Rounded continuous stadium bowl and canopy, outside the rectangular playing area.
