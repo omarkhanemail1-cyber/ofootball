@@ -328,7 +328,7 @@ document.addEventListener("keyup",e=>{if(actionKey(e)==="k"&&chargeStart&&!resta
 window.addEventListener("blur",()=>{finesseStart=0;});
 const controlHint=document.createElement("p");extraPanel.prepend(controlHint);
 const fullButton=document.createElement("button");fullButton.textContent="Fullscreen";fullButton.onclick=()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.();extraPanel.querySelector(".toolbar").append(fullButton);
-function liveHints(){requestAnimationFrame(liveHints);if(!document.getElementById("match").classList.contains("active"))return;controlHint.textContent=restartMode==="keeper"&&possession==="home"?"Keeper: hold Q for drop kick / W for goal kick":"WASD Move · J Pass · L Through ball · K Shoot · O Curl · Space Tackle · Q Switch";if(finesseStart)document.getElementById("ofPower").value=Math.min(100,(performance.now()-finesseStart)/9);}
+function liveHints(){requestAnimationFrame(liveHints);if(!document.getElementById("match").classList.contains("active"))return;controlHint.textContent=restartMode==="keeper"&&possession==="home"?"Keeper: Q drop kick / G goal kick / WASD dribble":"WASD Move · J Pass · L Through ball · K Shoot · O Curl · Space Tackle · Q Switch";if(finesseStart)document.getElementById("ofPower").value=Math.min(100,(performance.now()-finesseStart)/9);}
 requestAnimationFrame(liveHints);
 
 // Power marker follows the active player during charging.
@@ -361,3 +361,14 @@ renderLineup();
 // Keeper can leave a restart to dribble; normal backpasses stay at feet.
 const keeperMoveFix=movePlayer;movePlayer=function(dx,dy){if(restartMode==="keeper"&&possession==="home"&&activePlayer===0){restartMode=null;moveBall(players[0].x,players[0].y);}keeperMoveFix(dx,dy);};
 const keeperPassFix=distributeRestart;distributeRestart=function(){if(restartMode==="keeper"&&possession==="home"){restartMode=null;const p=players[0],q=players[9];flight={kind:"pass",side:"home",from:0,to:9,x:p.x,y:p.y,tx:Math.min(92,q.x+12),ty:q.y,elapsed:0,duration:1.8,arc:4,power:85};say("Keeper sends a long ball forward.");return;}keeperPassFix();};
+
+/* Explicit keeper controls and restart ball supply. */
+const restartSupply={readyAt:0,slot:-1,side:1,stock:[true,true,true,true],x:50,y:97};
+const throwOriginal=startThrow;
+startThrow=function(side,x,y){throwOriginal(side,x,y);restartSupply.side=y<50?-1:1;restartSupply.x=Math.max(2,Math.min(98,x));restartSupply.y=y<50?3:97;const slots=[14,38,62,86];let best=-1;for(let i=0;i<4;i++)if(restartSupply.stock[i]&&(best<0||Math.abs(slots[i]-x)<Math.abs(slots[best]-x)))best=i;restartSupply.slot=best;restartSupply.readyAt=performance.now()+(best<0?1600:650);if(best>=0)restartSupply.stock[best]=false;restartTime=restartSupply.readyAt+900;say(best<0?"Ball attendant delivers a replacement.":"Player collects a nearby spare ball.");};
+const supplyDistribute=distributeRestart;
+distributeRestart=function(){if(restartMode==="throw"&&performance.now()<restartSupply.readyAt){say("Wait for the replacement ball.");return;}const wasThrow=restartMode==="throw";supplyDistribute();if(wasThrow){restartSupply.slot=-1;restartSupply.readyAt=0;}};
+const supplyReset=resetMatch;resetMatch=function(){restartSupply.stock.fill(true);restartSupply.slot=-1;restartSupply.readyAt=0;supplyReset();};
+function keeperKick(drop){if(restartMode!=="keeper"||possession!=="home"||activePlayer!==0||flight)return;const p=players[0],direction=aim[0]<.2?[1,aim[1]]:aim;const len=Math.hypot(...direction)||1;const range=drop?72:55;restartMode=null;flight={kind:"pass",side:"home",from:0,to:9,x:p.x,y:p.y,tx:Math.min(97,Math.max(3,p.x+direction[0]/len*range)),ty:Math.min(96,Math.max(4,p.y+direction[1]/len*range)),elapsed:0,duration:drop?2.1:1.7,arc:drop?6:3,power:drop?90:75};say(drop?"Goalkeeper drop kick!":"Goal kick launched!");}
+for(const [label,drop] of [["Drop kick (Q)",true],["Goal kick (G)",false]]){const b=document.createElement("button");b.textContent=label;b.onclick=()=>keeperKick(drop);extraPanel.querySelector(".toolbar").append(b);}
+document.addEventListener("keydown",e=>{if(restartMode==="keeper"&&possession==="home"&&["q","g"].includes(e.key.toLowerCase())){e.preventDefault();e.stopImmediatePropagation();if(!e.repeat)keeperKick(e.key.toLowerCase()==="q");}},true);
