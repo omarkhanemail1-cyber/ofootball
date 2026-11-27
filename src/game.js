@@ -466,3 +466,6 @@ const nationalStyle=document.createElement("style");nationalStyle.textContent=".
  const flightSafeMove=movePlayer;movePlayer=function(dx,dy){if(!flight)return flightSafeMove(dx,dy);const saved=ballPos;try{return flightSafeMove(dx,dy);}finally{if(ballPos!==saved)moveBall(saved.x,saved.y);}};
 
  const closeControlMove=movePlayer;movePlayer=function(dx,dy){const p=players[activePlayer],carry=p&&possession==="home"&&!flight&&!restartMode&&!kickoffSide&&distanceToBall(p)<6;const result=closeControlMove(dx,dy);if(carry&&!flight&&possession==="home"){const d=Math.hypot(dx,dy)||1;moveBall(p.x+.55*dx/d,p.y+.8*dy/d);}return result;};
+
+ // Keep opposing outfield players clear of a stationary set-piece ball.
+ const clearSetPieceFrame=restartFrame;restartFrame=function(now,dt){clearSetPieceFrame(now,dt);if(!restartMode||restartMode==="keeper")return;const home=possession==="home";const start=home?12:1,end=home?22:11;for(let i=start;i<end;i++){const p=players[i],dx=p.x-ballPos.x,dy=p.y-ballPos.y;const d=Math.hypot(dx*1.05,dy*.68);if(d<9.15){const a=d>.01?Math.atan2(dy*.68,dx*1.05):(home?Math.PI:0);const x=Math.max(3,Math.min(97,ballPos.x+Math.cos(a)*9.3/1.05)),y=Math.max(4,Math.min(96,ballPos.y+Math.sin(a)*9.3/.68));place(i,x,y);}}};
