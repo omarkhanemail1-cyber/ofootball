@@ -439,3 +439,18 @@ const nationalStyle=document.createElement("style");nationalStyle.textContent=".
  function refreshClubRatings(){let panel=document.getElementById("club-overall-ratings");if(!panel){panel=document.createElement("div");panel.id="club-overall-ratings";lineupGrid.before(panel);}panel.replaceChildren();for(const club of [homeClub,awayClub]){const v=clubOverall(club);if(!v.overall)continue;const row=document.createElement("div");row.style.cssText="display:flex;align-items:center;gap:12px;padding:8px";const badge=document.createElement("strong");badge.style.cssText="display:grid;place-items:center;width:48px;height:52px;color:#111;clip-path:polygon(0 0,100% 0,100% 65%,50% 100%,0 65%);background:"+ratingColor(v.overall);badge.textContent=v.overall;const label=document.createElement("span");label.textContent=club+" · ATT "+v.attack+" · MID "+v.midfield+" · DEF "+v.defense;row.append(badge,label);panel.append(row);}}
  const rosterRatingRender=renderLineup;renderLineup=function(){rosterRatingRender();refreshClubRatings();};
  refreshClubRatings();
+
+ // Independent away kit palettes and textile patterns, based on 2026/27 references.
+ const awayKitStyles={
+ Barcelona:["#14121b","#683b91","#e8d269","fade"],
+ Liverpool:["#fafafa","#d84355","#bb354a","grey"],
+ Arsenal:["#f1d53d","#202735","#202735","zigzag"],
+ "Manchester City":["#151515","#f6d637","#f6d637","bee"],
+ "Real Madrid":["#17392d","#e9e5d8","#e9e5d8","tonal"],
+ "Bayern Munich":["#ffffff","#b51b32","#182b45","polo"],
+ Inter:["#fafafa","#1959a2","#1959a2","pinstripe"]
+ };
+ for(const [club,style] of Object.entries(awayKitStyles))clubKitDetails[club].away=style.slice(0,3);
+ const priorAwayPalette=palette;palette=function(club,kit){return kit==="away"&&awayKitStyles[club]?awayKitStyles[club].slice(0,2):priorAwayPalette(club,kit);};
+ const baseAwayGraphic=clubKitGraphic;clubKitGraphic=function(club,kit){const d=awayKitStyles[club];const base=baseAwayGraphic(club,kit);if(kit!=="away"||!d||!base)return base;const [a,b,ink,style]=d;let svg=decodeURIComponent(base.split('data:image/svg+xml,')[1].split('"')[0]);let pattern="";if(style==="fade")pattern='<defs><linearGradient id="fade" x2="0" y2="1"><stop stop-color="'+a+'"/><stop offset="1" stop-color="'+b+'"/></linearGradient></defs><rect width="100" height="100" fill="url(#fade)"/>';if(style==="pinstripe")for(let x=12;x<95;x+=8)pattern+='<path d="M'+x+' 0V100" stroke="'+b+'" stroke-width="0.8"/>';if(style==="zigzag")for(let y=5;y<100;y+=18)pattern+='<path d="M0 '+y+'l12 8 12 -8 12 8 12 -8 12 8 12 -8 12 8 12 -8" fill="none" stroke="'+b+'" stroke-width="4" opacity=".55"/>';if(style==="grey")pattern='<path d="M0 70L100 90M0 80L100 100" stroke="#c4c6ca" stroke-width="4" opacity=".65"/>';if(style==="bee")for(let y=12;y<100;y+=16)for(let x=10;x<100;x+=18)pattern+='<ellipse cx="'+x+'" cy="'+y+'" rx="3" ry="5" fill="'+b+'" opacity=".3"/>';if(style==="tonal")for(let x=0;x<100;x+=12)pattern+='<path d="M'+x+' 0l20 50 -20 50" fill="none" stroke="#285042" stroke-width="2"/>';if(style==="polo")pattern='<path d="M32 0L42 16 50 8 58 16 68 0" fill="#182b45" stroke="'+b+'" stroke-width="2"/>';svg=svg.replace(/(<rect width="100" height="100"[^>]*\/>)/,'$1'+pattern);return 'url("data:image/svg+xml,'+encodeURIComponent(svg)+'") center/100% 100% no-repeat';};
+ updateKitVisual("home");updateKitVisual("away");
