@@ -150,7 +150,8 @@ const home=i<11,j=i%11,dir=home?1:-1,attack=possession===(home?"home":"away");
 let [baseX,baseY]=shape[j],x=(home?baseX:100-baseX)+(ballPos.x-50)*.35,y=baseY+(ballPos.y-50)*.16;
 if(attack){x+=dir*(j>=8?19:j>=5?10:3);if(j>=8){const line=players.filter(p=>p.team!==(home?"home":"away")).map(p=>p.x).sort((a,b)=>dir*(b-a));x=home?Math.min(x,Math.max(50,ballPos.x,line[1])-2):Math.max(x,Math.min(50,ballPos.x,line[1])+2);}}
 else if(j<=7){const q=players[home?j+11:j];x=x*.65+(q.x-dir*5)*.35;y=y*.65+q.y*.35;}
-chase(i,clamp(x,5,95),clamp(y,5,95),dt*(attack?.58:.48));
+if(attack&&j>=5&&!flight){const opponents=players.filter(q=>q.team!==players[i].team),mates=players.filter(q=>q!==players[i]&&q.team===players[i].team);let best=-Infinity,bx=x,by=y;for(const dx of [-5,0,5])for(const dy of [-12,0,12]){let tx=clamp(x+dir*dx,5,95),ty=clamp(y+dy,5,95);const line=opponents.map(q=>q.x).sort((a,b)=>dir*(b-a));if(line.length>1){const limit=home?Math.max(50,ballPos.x,line[1])-1:Math.min(50,ballPos.x,line[1])+1;tx=home?Math.min(tx,limit):Math.max(tx,limit);}const space=Math.min(...opponents.map(q=>Math.hypot(q.x-tx,q.y-ty))),spacing=Math.min(...mates.map(q=>Math.hypot(q.x-tx,q.y-ty)));const value=Math.min(space,18)+Math.min(spacing,12)*.6-Math.hypot(tx-x,ty-y)*.18-Math.hypot(tx-players[i].x,ty-players[i].y)*.08;if(value>best){best=value;bx=tx;by=ty;}}x=bx;y=by;}
+chase(i,clamp(x,5,95),clamp(y,5,95),dt*(attack?.95:.65));
 }}
 function animateMove(i,c){let el=document.getElementById("p"+i);if(!el||el.classList.contains(c))return;el.classList.add(c);setTimeout(()=>el.classList.remove(c),500);}
 const animStyle=document.createElement("style");animStyle.textContent="@keyframes ofFeint{0%,100%{rotate:0deg}25%{rotate:-22deg}65%{rotate:22deg}}@keyframes ofDive{0%,100%{rotate:0deg}50%{rotate:65deg}}.ofFeint{animation:ofFeint .5s ease}.ofDive{animation:ofDive .5s ease}.ofFeint .legs{animation:ofFeint .25s alternate 2}";document.head.append(animStyle);
