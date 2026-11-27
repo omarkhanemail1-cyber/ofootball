@@ -140,7 +140,18 @@ const passKickoff=pass;pass=function(t){if(kickoffSide==="home"){releaseKickoff(
 const moveKickoff=movePlayer;movePlayer=function(dx,dy){if(!kickoffSide||training)moveKickoff(dx,dy);};
 function switchNearest(){if(kickoffSide)return;let best=-1,d=Infinity;for(let i=0;i<11;i++){if(i===activePlayer)continue;let n=distanceToBall(players[i]);if(n<d){d=n;best=i;}}if(best>=0){activePlayer=best;markControlledPlayer();say("Player "+(best+1)+" selected.");}}
 function keeperRestart(side){let i=side==="home"?11:0;possession=side==="home"?"away":"home";awayCarrier=i===11?11:-1;if(i===0)activePlayer=0;moveBall(players[i].x,players[i].y);markControlledPlayer();}
-function supportAI(dt){if(training)return;for(let i=12;i<22;i++){if(i===awayCarrier||distanceToBall(players[i])<12)continue;let [x,y]=shape[i%11];chase(i,Math.max(8,Math.min(92,100-x+(ballPos.x-50)*.45)),y,dt*.45);}}
+function supportAI(dt){
+if(training)return;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+let press=12;for(let i=13;i<22;i++)if(distanceToBall(players[i])<distanceToBall(players[press]))press=i;
+for(let i=1;i<22;i++){
+if(i===11||i===activePlayer||i===awayCarrier&&possession==="away"||i===press&&possession==="home")continue;
+const home=i<11,j=i%11,dir=home?1:-1,attack=possession===(home?"home":"away");
+let [baseX,baseY]=shape[j],x=(home?baseX:100-baseX)+(ballPos.x-50)*.35,y=baseY+(ballPos.y-50)*.16;
+if(attack){x+=dir*(j>=8?19:j>=5?10:3);if(j>=8){const line=players.filter(p=>p.team!==(home?"home":"away")).map(p=>p.x).sort((a,b)=>dir*(b-a));x=home?Math.min(x,Math.max(50,ballPos.x,line[1])-2):Math.max(x,Math.min(50,ballPos.x,line[1])+2);}}
+else if(j<=7){const q=players[home?j+11:j];x=x*.65+(q.x-dir*5)*.35;y=y*.65+q.y*.35;}
+chase(i,clamp(x,5,95),clamp(y,5,95),dt*(attack?.58:.48));
+}}
 function animateMove(i,c){let el=document.getElementById("p"+i);if(!el||el.classList.contains(c))return;el.classList.add(c);setTimeout(()=>el.classList.remove(c),500);}
 const animStyle=document.createElement("style");animStyle.textContent="@keyframes ofFeint{0%,100%{rotate:0deg}25%{rotate:-22deg}65%{rotate:22deg}}@keyframes ofDive{0%,100%{rotate:0deg}50%{rotate:65deg}}.ofFeint{animation:ofFeint .5s ease}.ofDive{animation:ofDive .5s ease}.ofFeint .legs{animation:ofFeint .25s alternate 2}";document.head.append(animStyle);
 const trainingStart=document.getElementById("ofTraining").onclick;document.getElementById("ofTraining").onclick=()=>{trainingStart();kickoffSide=null;};
@@ -327,3 +338,11 @@ const kickMarker=document.createElement("div");kickMarker.style.cssText="positio
 document.getElementById("match").addEventListener("pointermove",e=>{if(e.pointerType!=="mouse"||paused)return;const p=document.getElementById("p"+activePlayer);if(!p)return;const r=p.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2;if(Math.hypot(dx,dy)>8){mouseAimActive=true;aim=[dx,dy];}});document.addEventListener("keydown",e=>{if(keys[e.key.toLowerCase()])mouseAimActive=false;},true);window.addEventListener("blur",()=>{mouseAimActive=false;chargeStart=0;});
 
 function kickBounceHeight(f,t){const a=f.arc||0;if(!a)return 0;if(t<.55)return a*Math.sin(Math.PI*t/.55);if(t<.82)return a*.32*Math.sin(Math.PI*(t-.55)/.27);if(t<.94)return a*.10*Math.sin(Math.PI*(t-.82)/.12);return 0;}
+
+// Day 4 Academy: tactical lessons and direct practice entry.
+lessons.push(["Off-ball runs","Watch your wingers move into space. Aim a through pass ahead of the runner with L."],["Defensive shape","Stay goal-side, switch with Q and tackle with Space when close enough."],["Shot power","Hold K to charge, aim toward goal, then release. Low power keeps the ball closer to the grass."]);
+const academyPractice=document.createElement("button");academyPractice.textContent="Start pitch practice";academyPractice.onclick=()=>document.getElementById("ofTraining").click();document.querySelector("#tutorial .actions").append(academyPractice);renderLesson();
+
+// Day 4: select any starting XI player as captain before kickoff.
+const day4LineupRender=renderLineup;
+renderLineup=function(){day4LineupRender();const captain=document.getElementById("ofCaptain");if(!captain)return;const cards=Array.from(document.getElementById("lineupGrid").children);function refresh(){cards.forEach((card,i)=>{const b=card.querySelector(".ofCaptainPick");if(!b)return;const selected=Number(captain.value)===i+1;b.textContent=selected?"© Captain selected":"Make captain";b.setAttribute("aria-pressed",String(selected));b.classList.toggle("active",selected);});}cards.forEach((card,i)=>{const b=document.createElement("button");b.type="button";b.className="ofCaptainPick";b.style.marginTop="8px";b.setAttribute("aria-label","Select player "+(i+1)+" as captain");b.onclick=()=>{captain.value=String(i+1);captain.dispatchEvent(new Event("change",{bubbles:true}));refresh();};card.append(b);});refresh();};
