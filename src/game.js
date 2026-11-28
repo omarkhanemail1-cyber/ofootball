@@ -585,3 +585,29 @@ restartFrame=function(now,dt){
  coordinatedPress(dt,possession==='home'?'away':'home',true);
  if(possession==='away'&&now>restartTime)distributeRestart();
 };
+
+/* Keep AI bodies separated and react to loose balls without teleporting. */
+const pressureSupportV2=supportAI;
+supportAI=function(dt){
+ if(training||paused||restartMode||kickoffSide)return pressureSupportV2(dt);
+ if(possession==='loose'&&!flight){
+ for(const side of ['home','away']){
+ const nearest=players.map((p,i)=>({p,i,d:distanceToBall(p)})).filter(o=>o.p.team===side&&o.i%11!==0&&o.i!==activePlayer).sort((a,b)=>a.d-b.d);
+ nearest.slice(0,3).forEach(({i},j)=>chase(i,pressureClamp(ballPos.x+(j===0?0:side==='home'?-3:3),3,97),pressureClamp(ballPos.y+(j===0?0:j===1?-3:3),4,96),dt*.9));
+ }
+ }else pressureSupportV2(dt);
+ if(flight)return;
+ for(let i=1;i<22;i++){
+ if(i===11)continue;
+ for(let j=i+1;j<22;j++){
+ if(j===11)continue;
+ const p=players[i],q=players[j],dx=(q.x-p.x)*1.05,dy=(q.y-p.y)*.68,d=Math.hypot(dx,dy);
+ if(d>=.85)continue;
+ const angle=d>.001?Math.atan2(dy,dx):(i*2.4+j);
+ const push=Math.min(.85-d,dt*3),x=Math.cos(angle)*push/1.05,y=Math.sin(angle)*push/.68;
+ const fixed=k=>k===activePlayer||(possession==='away'&&k===awayCarrier);
+ if(!fixed(i)){p.x=pressureClamp(p.x-x,3,97);p.y=pressureClamp(p.y-y,4,96);paintPlayer(i);}
+ if(!fixed(j)){q.x=pressureClamp(q.x+x,3,97);q.y=pressureClamp(q.y+y,4,96);paintPlayer(j);}
+ }
+ }
+};
