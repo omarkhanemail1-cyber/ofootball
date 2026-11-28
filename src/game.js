@@ -545,3 +545,43 @@ const keeperDraw=document.createElement('canvas');keeperDraw.width=320;keeperDra
 
 const keeperDistributionRules=distributeRestart;distributeRestart=function(){if(!keeperReady())return keeperDistributionRules();const p=players[0],to=players.slice(1,11).map((q,j)=>({i:j+1,d:Math.hypot(q.x-p.x,q.y-p.y)})).sort((a,b)=>a.d-b.d)[0].i,q=players[to];restartMode=null;flight={kind:'pass',side:'home',from:0,to,x:p.x,y:p.y,tx:q.x,ty:q.y,elapsed:0,duration:Math.max(.3,Math.hypot(q.x-p.x,q.y-p.y)/35),arc:keeperDeadBall?0:1.5,targeted:true};say(keeperDeadBall?'Short goal kick':'Keeper throws to a teammate');};
 const keeperShotRules=shoot;shoot=function(){if(keeperReady()){keeperKick(false);return;}return keeperShotRules();};
+
+/* Day 5: coordinated high press, with distinct approach lanes and legal keeper restarts. */
+const pressureClamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+let pressureSide='',pressureOrder=[],pressureAt=0;
+function pressureRank(side,now){
+ if(side!==pressureSide||now-pressureAt>650){pressureSide=side;pressureAt=now;pressureOrder=players.map((p,i)=>({i,p,d:distanceToBall(p)})).filter(o=>o.p.team===side&&o.i%11!==0).sort((a,b)=>a.d-b.d).map(o=>o.i);}
+ return pressureOrder;
+}
+function coordinatedPress(dt,side,protectedBall=false){
+ const now=performance.now(),order=pressureRank(side,now),dir=side==='away'?1:-1;
+ order.forEach((i,j)=>{
+ if(i===activePlayer&&side==='home')return;
+ const angle=j*2.399963, radius=protectedBall?8+j*.65:j===0?.4:j<7?2.8+Math.floor((j-1)/3)*2.3:8+(j-7)*2;
+ const x=pressureClamp(ballPos.x+Math.cos(angle)*radius*dir,3,97),y=pressureClamp(ballPos.y+Math.sin(angle)*radius,4,96);
+ chase(i,x,y,dt*(j<7?1.05:.85));
+ });
+}
+function nearbySupport(dt,side){
+ const dir=side==='home'?1:-1,carrier=side==='home'?activePlayer:awayCarrier;
+ const mates=players.map((p,i)=>({p,i})).filter(o=>o.p.team===side&&o.i%11!==0&&o.i!==carrier);
+ mates.forEach(({i},j)=>{
+ const angle=(j%5-2)*.65,front=j<5,range=front?12:9;
+ const x=pressureClamp(ballPos.x+dir*(front?range*Math.cos(angle):-range),4,96);
+ const y=pressureClamp(ballPos.y+(front?Math.sin(angle)*range:(j-6.5)*7),4,96);
+ chase(i,x,y,dt*.88);
+ });
+}
+const priorPressureSupport=supportAI;
+supportAI=function(dt){
+ if(training||paused||restartMode||kickoffSide||flight||!['home','away'].includes(possession))return priorPressureSupport(dt);
+ const defending=possession==='home'?'away':'home';
+ coordinatedPress(dt,defending);nearbySupport(dt,possession);
+};
+const priorPressureRestart=restartFrame;
+restartFrame=function(now,dt){
+ if(restartMode!=='keeper'||training)return priorPressureRestart(now,dt);
+ nearbySupport(dt,possession);
+ coordinatedPress(dt,possession==='home'?'away':'home',true);
+ if(possession==='away'&&now>restartTime)distributeRestart();
+};
